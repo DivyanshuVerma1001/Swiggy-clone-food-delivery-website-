@@ -1,3 +1,5 @@
+import { Link } from "react-router"
+
 export default function Header(){
 
 
@@ -25,13 +27,13 @@ export default function Header(){
                 </div>
             </div>
             <div className="max-w-[80%] container mx-auto flex ">
-                <a href="">
+                <Link className="transform transition duration-300 hover:scale-105" to="/Restaurants">
                     <img draggable="false" src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/23/ec86a309-9b06-48e2-9adc-35753f06bc0a_Food3BU.png" alt="" />
-                </a>
-                <a href="">
+                </Link>
+                <a className="transform transition duration-300 hover:scale-105">
                     <img draggable="false"src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/23/b5c57bbf-df54-4dad-95d1-62e3a7a8424d_IM3BU.png" alt="" />
                 </a>
-                <a href="">
+                <a className="transform transition duration-300 hover:scale-105">
                     <img draggable="false" src="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/MERCHANDISING_BANNERS/IMAGES/MERCH/2024/7/23/b6d9b7ab-91c7-4f72-9bf2-fcd4ceec3537_DO3BU.png" alt="" />
                 </a>
             </div>
