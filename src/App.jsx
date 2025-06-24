@@ -8,6 +8,7 @@ import SearchFood from './Components/SearchFood'
 import SecondaryHome from './Components/SecondaryHome'
 import { store } from './Store/Stores'
 import {Provider} from "react-redux"
+import Checkout from './Components/Checkout'
 function App() {
 
 
@@ -21,11 +22,12 @@ function App() {
             <Route path="/Restaurants" element={<Restaurant></Restaurant>}></Route>
             <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
             <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
-          </Route>      
+          </Route>  
+          <Route path="/checkout" element={<Checkout></Checkout>}></Route>    
         </Routes>
       </BrowserRouter>
       </Provider>
-      
+       
     </>
   )
 }
