@@ -5,23 +5,27 @@ import Home from './Components/Home'
 import {BrowserRouter,Routes, Route} from "react-router"
 import RestaurantMenu from './Components/RestaurantMenu'
 import SearchFood from './Components/SearchFood'
+import SecondaryHome from './Components/SecondaryHome'
+import { store } from './Store/Stores'
+import {Provider} from "react-redux"
 function App() {
 
 
   return (
     <>
+      <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
-          <Route path="/Restaurants" element={<Restaurant></Restaurant>}></Route>
-          <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
-          <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
+          <Route element={<SecondaryHome></SecondaryHome>}>
+            <Route path="/Restaurants" element={<Restaurant></Restaurant>}></Route>
+            <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
+            <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
+          </Route>      
         </Routes>
       </BrowserRouter>
+      </Provider>
       
-      <div>
-        <h1 className='text-4xl'>Jai Shree Ganesh</h1>
-      </div>
     </>
   )
 }
