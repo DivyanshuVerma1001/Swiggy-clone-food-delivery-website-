@@ -10,7 +10,8 @@ export default function RestaurantMenu(){
                 const proxyServer="https://cors-anywhere.herokuapp.com/"
                 const proxyUrl = "http://localhost:8080/";
                 const swiggyAPI=`https://www.swiggy.com/mapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.6327&lng=77.2198&restaurantId=${id}&submitAction=ENTER`
-                const response =await fetch(proxyUrl+swiggyAPI )
+                const finalAPI =`https://cors-proxy-vercel-pied.vercel.app/api/proxy?url=https%3A%2F%2Fwww.swiggy.com%2Fmapi%2Fmenu%2Fpl%3Fpage-type%3DREGULAR_MENU%26complete-menu%3Dtrue%26lat%3D28.6327%26lng%3D77.2198%26restaurantId%3D${id}%26submitAction%3DENTER`
+                const response =await fetch(finalAPI )
                 const data= await response.json();
                 const tempData=data?.data?.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards
                 const filterData=tempData.filter((items)=>'title' in items?.card?.card)

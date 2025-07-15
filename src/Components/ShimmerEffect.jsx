@@ -1,4 +1,4 @@
-import ShimmerCard from "./shimmerCard";
+import ShimmerCard from "./ShimmerCard";
 
 export default function Shimmer() {
   return (
