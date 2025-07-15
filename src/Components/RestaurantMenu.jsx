@@ -27,10 +27,10 @@ export default function RestaurantMenu(){
             <div  className="w-[60%] mx-auto mt-20">
                 <Link to={`/city/delhi/${id}/search`}>
                
-                <div className="w-full bg-[#02060C0D] flex items-center justify-between text-xl border rounded-2xl font-semibold  text-slate-400 py-3">
+                <div className="w-full bg-[#02060C0D] flex items-center justify-between text-xl border rounded-2xl font-semibold  text-slate-400 hover:cursor-text py-3">
                     
                     <p className="mx-auto">Search for Dishes</p>
-                    <span className="h-6 pr-10"><img className="h-6 contrast-1"src="../../assets/searchIcon.png" alt="" /></span>
+                    <span className="h-6 pr-10"><img className="h-6 contrast-1"src="/assets/searchIcon.png" alt="" /></span>
                     <img src="" alt="" />
                 </div>
                 </Link>
@@ -40,7 +40,7 @@ export default function RestaurantMenu(){
             <div className="flex items-center space-x-4">     
                 <button onClick={()=>setSelected(selected==="veg"?null:"veg")} className={`w-18 h-8 flex items-center rounded-full p-2  border border-slate-400`}>
                     <div className={`w-17 h-3 flex items-center rounded-full p-1 transition duration-300 ${selected==="veg" ? "bg-green-500" : "bg-gray-300"}`}>
-                    <img src="../../assets/vegSymbol.png" className={`bg-white w-6 h-6 rounded   shadow-md transform transition-transform duration-300 ${selected==="veg" ? "translate-x-7 " : "translate-x-[-4px]"}`}>
+                    <img src="/assets/vegSymbol.png" className={`bg-white w-6 h-6 rounded   shadow-md transform transition-transform duration-300 ${selected==="veg" ? "translate-x-7 " : "translate-x-[-4px]"}`}>
                     </img> 
                     </div>
                   
