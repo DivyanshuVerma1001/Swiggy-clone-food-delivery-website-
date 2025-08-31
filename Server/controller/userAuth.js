@@ -180,8 +180,8 @@ async function sendVerificationCode(  verificationMethod,  verificationCode,  na
 }
 const login = async (req, res) => {
     try{
-  const { email, password } = req.body;
-  if (!email || !password) {
+      const { email, password } = req.body;
+      if (!email || !password) {
     return next(new ErrorHandler("Email and password are required.", 400));
   }
   const user = await User.findOne({ email, accountVerified: true }).select(
