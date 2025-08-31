@@ -211,6 +211,24 @@ const login = async (req, res) => {
     })
 }
 };
+const logout = async (req,res)=>{
+  try{
+  res.status(200).cookie("token","",{
+    expires:new Date(Date.now());
+    httpOnly:true,
+  }).json({
+    success:true,
+    message:"logged out successfully "
+  })
+}catch(err){
+  res.status(500).json({
+    success:false,
+    message:"fail to logout"
+  })
+}
+}
+
+
 
 
 
