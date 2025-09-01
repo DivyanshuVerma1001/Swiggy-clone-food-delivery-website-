@@ -3,7 +3,12 @@
     const bcrypt = require("bcrypt");
     const generateVerificationCode= require("../utils/verificationCodeGenerator")
     const generateEmailTemplate= require("../utils/emailTemplate")
+    const  twilio = require("twilio");
+
     const sendEmail= require('../utils/sendEmail')
+    
+    const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
+
     const register=async (req,res)=>{
         try{
             let {name,email,password,phone,verificationMethod}= req.body;
@@ -182,54 +187,54 @@ const login = async (req, res) => {
     try{
       const { email, password } = req.body;
       if (!email || !password) {
-    return next(new ErrorHandler("Email and password are required.", 400));
-  }
-  const user = await User.findOne({ email, accountVerified: true }).select(
-    "+password"
-  );
-  if (!user) {
-    return next(new ErrorHandler("Invalid email or password.", 400));
-  }
-  const isPasswordMatched = await user.comparePassword(password);
-  if (!isPasswordMatched) {
-    return next(new ErrorHandler("Invalid email or password.", 400));
-  }
-    const token = jwt.sign({_id:userData._id, emailId:userData.email},"asffds",{expiresIn:3600});
-    res.cookie('token',token,{maxAge:60*60*1000});
-    const reply={
+      return next(new ErrorHandler("Email and password are required.", 400));
+      }
+      const user = await User.findOne({ email, accountVerified: true }).select(
+        "+password"
+      );
+      if (!user) {
+         return next(new ErrorHandler("Invalid email or password.", 400));
+      }
+      const isPasswordMatched = await user.comparePassword(password);
+      if (!isPasswordMatched) {
+          return next(new ErrorHandler("Invalid email or password.", 400));
+      }
+      const token = jwt.sign({_id:userData._id, emailId:userData.email},"asffds",{expiresIn:3600});
+        res.cookie('token',token,{maxAge:60*60*1000});
+      const reply={
             name:userData.name,
             emailId:userData.email,
             _id:userData._id
         }
-        res.status(201).json({
+      res.status(201).json({
             user:reply,
             message:"otp is verified !" 
         })
-}catch(err){
-    res.status(500).json({
+      }catch(err){
+        res.status(500).json({
         error:err.message
     })
-}
-};
+    }
+  };
 const logout = async (req,res)=>{
   try{
   res.status(200).cookie("token","",{
-    expires:new Date(Date.now());
+    expires:new Date(Date.now()),
     httpOnly:true,
   }).json({
     success:true,
     message:"logged out successfully "
   })
-}catch(err){
+  }catch(err){
   res.status(500).json({
     success:false,
     message:"fail to logout"
   })
+  }
 }
-}
 
 
 
 
 
-    module.exports={register,verifyOtp,login}
+    module.exports={register,verifyOtp,login,logout}
