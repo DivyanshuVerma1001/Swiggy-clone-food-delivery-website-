@@ -4,4 +4,5 @@ const authRouter= express.Router()
 
 authRouter.post('/register',register);
 authRouter.post('/otpverification',verifyOtp)
+authRouter.get('./check',)
 module.exports= authRouter;

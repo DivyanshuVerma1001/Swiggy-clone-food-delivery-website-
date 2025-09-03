@@ -10,8 +10,11 @@
     const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 
     const register=async (req,res)=>{
+        console.log("register is called ")
         try{
+            console.log("req.body",req.body)
             let {name,email,password,phone,verificationMethod}= req.body;
+            console.log("name",name)
             password = await bcrypt.hash(password,10);
             // checking for existing user 
             const existingUser= await User.findOne({
@@ -53,6 +56,7 @@
                 userData.accountVerification= [verificationObj];
                 const userInfo= await User.create(userData);
                 console.log("checking verificaton method", verificationMethod)
+                console.log("user name :", userInfo.name)
                 sendVerificationCode(  verificationMethod,  verificationCode,  userInfo.name,  userInfo.email,  userInfo.phone,  res)
         }
             else if (user.accountVerification.length<=3){
@@ -63,6 +67,8 @@
                 user.accountVerification= [verificationObj,...user.accountVerification];
                 const userInfo =await user.save();
                 console.log("checking verificaton method", verificationMethod)
+                                console.log("user name :", userInfo.name)
+
                 sendVerificationCode(  verificationMethod,  verificationCode,  userInfo.name,  userInfo.email,  userInfo.phone,  res)
             }
         
@@ -145,10 +151,12 @@
     
 async function sendVerificationCode(  verificationMethod,  verificationCode,  name,  email,  phone,  res) {
   try {
+    console.log("this is user name ", name)
+    console.log("sending verification code ",verificationMethod , verificationCode , name , email , phone )
     console.log(verificationMethod)
     if (verificationMethod === "email") {
       const message = generateEmailTemplate(verificationCode);
-      console.log(message)
+      // console.log(message)
       sendEmail({ email, subject: "Your Verification Code", message });
       res.status(200).json({
         success: true,

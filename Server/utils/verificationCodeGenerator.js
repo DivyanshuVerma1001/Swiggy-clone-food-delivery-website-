@@ -1,5 +1,5 @@
 
 const generateVerificationCode=()=>{
-    return 123;
+    return 12345;
 }
 module.exports= generateVerificationCode;

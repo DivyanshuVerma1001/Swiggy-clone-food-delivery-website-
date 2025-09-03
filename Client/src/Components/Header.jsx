@@ -11,7 +11,7 @@ export default function Header(){
                     <a target="_blank" href="https://www.swiggy.com/corporate/">Swiggy Corporate</a>  
                     <a href="https://partner.swiggy.com/login#/swiggy">Parter with us</a>
                     <a className="border border-white py-3 px-4 rounded-2xl"target="_blank">Get the App</a>
-                    <Link to ="/auth">
+                    <Link to ="/signup">
                     <a className="border border-black py-3 px-4 rounded-2xl bg-black">Sign in</a>
                     </Link>
                 </div>   

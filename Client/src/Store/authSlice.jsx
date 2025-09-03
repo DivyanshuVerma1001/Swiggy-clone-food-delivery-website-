@@ -6,9 +6,25 @@ export const registerUser= createAsyncThunk(
     async (userData,{rejectWithValue})=>{
         try{
             const response = await axiosClient.post("/user/register",userData);
-            return  response.data.user;
+            console.log("register",response)
+            return  response.data;
         }
         catch(error){
+            console.log("error occur ",error)
+            return rejectWithValue(error.response?.data?.message || error.message)
+        }
+    }
+)
+
+export const otpVerification= createAsyncThunk(
+    'auth/otpVerification',
+    async (userData,{rejectWithValue})=>{
+        try{
+            const response = await axiosClient.post("/user/otpverification",userData);
+            return  response.data;
+        }
+        catch(error){
+            console.log("error occur ",error)
             return rejectWithValue(error.response?.data?.message || error.message)
         }
     }
@@ -18,7 +34,7 @@ export const loginUser= createAsyncThunk(
     async (credentials,{rejectWithValue})=>{
         try{
             const response = await axiosClient.post('/user/login',credentials);
-            return response.data.user;
+            return response.data;
         }
         catch(error){
             return rejectWithValue(error)
@@ -30,7 +46,7 @@ export const checkAuth= createAsyncThunk(
     async (_,{rejectWithValue})=>{
         try{
             const {data}=await axiosClient.get('user/check');
-            return data.user;
+            return data;
         }catch(error){
             return rejectWithValue(error.response?.data?.message || error.message);
         }
@@ -79,10 +95,25 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled,(state,action)=>{
                 state.loading= false;
-                state.isAuthenticated= !!action.payload;
-                state.user=action.payload
+                
             })
             .addCase(registerUser.rejected,(state,action)=>{
+                state.loading= false;
+                state.error= action.payload?.message ||"something went wrong";
+                state.isAuthenticated= false;
+                state.user= null
+            })
+            //otpverification user cases
+            .addCase(otpVerification.pending,(state)=>{
+                state.loading=true;
+                state.error=null
+            })
+            .addCase(otpVerification.fulfilled,(state,action)=>{
+                state.loading= false;
+                state.isAuthenticated= !!action.payload
+                state.user= action.payload;                
+            })
+            .addCase(otpVerification.rejected,(state,action)=>{
                 state.loading= false;
                 state.error= action.payload?.message ||"something went wrong";
                 state.isAuthenticated= false;
