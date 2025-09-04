@@ -1,8 +1,11 @@
     const User= require("../model/user")
     const jwt = require('jsonwebtoken')
+    const crypto = require("crypto");
+
     const bcrypt = require("bcrypt");
     const generateVerificationCode= require("../utils/verificationCodeGenerator")
     const generateEmailTemplate= require("../utils/emailTemplate")
+    const generateResetPasswordToken= require('../utils/generateResetToken')
     const  twilio = require("twilio");
 
     const sendEmail= require('../utils/sendEmail')
@@ -129,7 +132,7 @@
         userData.accountVerification=[];
 
         await userData.save();
-        const token = jwt.sign({_id:userData._id, emailId:userData.email},"asffds",{expiresIn:3600});
+        const token = jwt.sign({_id:userData._id, emailId:userData.email},process.env.JWT_KEY,{expiresIn:3600});
         res.cookie('token',token,{maxAge:60*60*1000});
         const reply={
             name:userData.name,
@@ -185,7 +188,7 @@ async function sendVerificationCode(  verificationMethod,  verificationCode,  na
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       message: "Verification code failed to send.",
     });
@@ -193,21 +196,25 @@ async function sendVerificationCode(  verificationMethod,  verificationCode,  na
 }
 const login = async (req, res) => {
     try{
-      const { email, password } = req.body;
-      if (!email || !password) {
-      return next(new ErrorHandler("Email and password are required.", 400));
-      }
-      const user = await User.findOne({ email, accountVerified: true }).select(
+      console.log("login api started , req.body:",req.body)
+        const {email, password}=req.body;
+        if(!email){
+            throw new Error("Invalid Credential email !")
+        }
+        if(!password){
+            throw new Error("Invaild Credentail passworrd !")
+        }
+      const userData = await User.findOne({ email, accountVerified: true }).select(
         "+password"
       );
-      if (!user) {
-         return next(new ErrorHandler("Invalid email or password.", 400));
+      if (!userData) {
+         throw new Error("Invalid email or password.");
       }
-      const isPasswordMatched = await user.comparePassword(password);
-      if (!isPasswordMatched) {
-          return next(new ErrorHandler("Invalid email or password.", 400));
-      }
-      const token = jwt.sign({_id:userData._id, emailId:userData.email},"asffds",{expiresIn:3600});
+      const match = await bcrypt.compare(password,userData.password)
+        if (!match){
+            throw new Error("Invaild Credential not matched!")
+        }
+      const token = jwt.sign({_id:userData._id, emailId:userData.email},process.env.JWT_KEY,{expiresIn:3600});
         res.cookie('token',token,{maxAge:60*60*1000});
       const reply={
             name:userData.name,
@@ -216,9 +223,10 @@ const login = async (req, res) => {
         }
       res.status(201).json({
             user:reply,
-            message:"otp is verified !" 
+            message:"login successfully" 
         })
       }catch(err){
+        console.log("Error in login :",err);
         res.status(500).json({
         error:err.message
     })
@@ -241,8 +249,86 @@ const logout = async (req,res)=>{
   }
 }
 
+ const forgotPassword = async (req, res) => {
+  const user = await User.findOne({
+    email: req.body.email,
+    accountVerified: true,
+  });
+  const x = await User.find();
+  console.log(x)
+  console.log(req.body.email)
+  if (!user) {
+    throw new Error("User not found.");
+  }
+  const resetToken = generateResetPasswordToken();
+  user.resetPassword.resetPasswordExpire= Date.now() + 15 * 60 * 1000;
+  user.resetPassword.resetPasswordToken=resetToken
+  await user.save({ validateBeforeSave: false });
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+
+  const message = `Your Reset Password Token is:- \n\n ${resetPasswordUrl} \n\n If you have not requested this email then please ignore it.`;
+
+  try {
+    sendEmail({
+      email: user.email,
+      subject: "MERN AUTHENTICATION APP RESET PASSWORD",
+      message,
+    });
+    res.status(200).json({
+      success: true,
+      message: `Email sent to ${user.email} successfully.`,
+    });
+  } catch (error) {
+    user.resetPassword.resetPasswordToken = undefined;
+    user.resetPassword.resetPasswordExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+    res.status(400).json({
+        error:error.message ? error.message : "Cannot send reset password token."
+    }
+      )
+    ;
+  }
+};
+const resetPassword = async (req, res) => {
+  try{
+  const { token } = req.params;
+  console.log("this reset password")
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(token)
+    .digest("hex");
+    console.log("done")
+//   const user = await User.findOne({
+//   "resetPassword.resetPasswordToken": resetPasswordToken,
+//   "resetPassword.resetPasswordExpire": { $gt: Date.now() },
+// });
+const user = await User.findOne()
+console.log("user mil gya :",user)
+
+  if (!user) {
+    throw new Error("Reset password token is invalid or has been expired.")
+  }
+  console.log("user mil gya ");
+  if (req.body.password !== req.body.confirmPassword) {
+    throw new Error("Password & confirm password do not match.");
+  }
+  let password= req.body.password;
+  password = await bcrypt.hash(password,10);
+  user.password = password;
+  user.resetPassword.resetPasswordToken = undefined;
+  user.resetPassword.resetPasswordExpire = undefined;
+  await user.save();
+  res.status(200).json({
+    message:"password updated successfully"
+  })
+}
+catch(err){
+  res.status(400).json({
+    error:err
+  })
+}
+  
+};
 
 
-
-
-    module.exports={register,verifyOtp,login,logout}
+module.exports={register,verifyOtp,login,logout,forgotPassword,resetPassword}

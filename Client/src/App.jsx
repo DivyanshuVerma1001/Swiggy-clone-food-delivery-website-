@@ -7,12 +7,12 @@ import RestaurantMenu from './Components/RestaurantMenu'
 import SearchFood from './Components/SearchFood'
 import SecondaryHome from './Components/SecondaryHome'
 import Login from './pages/loginPage'
-import { store } from './Store/Stores'
-import {Provider, useDispatch, useSelector} from "react-redux"
+import { useDispatch, useSelector} from "react-redux"
 import Checkout from './Components/Checkout'
 import Signup from './pages/signupPage'
 import OtpVerification from './pages/otpVerificationPage'
 import { checkAuth } from './Store/authSlice'
+import { useEffect } from 'react'
 function App() {
    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
   console.log(user)
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <>
-      <Provider store={store}>
+      
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
@@ -47,7 +47,7 @@ function App() {
           <Route path="/checkout" element={<Checkout></Checkout>}></Route>    
         </Routes>
       </BrowserRouter>
-      </Provider>
+    
        
     </>
   )

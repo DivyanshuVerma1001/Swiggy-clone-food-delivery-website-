@@ -1,8 +1,23 @@
 const express= require('express')
-const {register,verifyOtp}= require('../controller/userAuth')
+const {register,verifyOtp,login ,forgotPassword,resetPassword}= require('../controller/userAuth')
+const userMiddleware= require('../middleware/userMiddleware');
 const authRouter= express.Router()
 
 authRouter.post('/register',register);
 authRouter.post('/otpverification',verifyOtp)
-authRouter.get('./check',)
+authRouter.post('/login',login)
+authRouter.post('/forgotPassword',forgotPassword)
+authRouter.post('/resetPassword/:token',resetPassword)
+authRouter.get('/check',userMiddleware,(req,res)=>{
+    const reply= {
+        name:req.result.name,
+
+        emailId:req.result.email,
+        _id:req.result._id
+    }
+    res.status(200).json({
+        user:reply,
+        message:"valid user"
+    })
+})
 module.exports= authRouter;

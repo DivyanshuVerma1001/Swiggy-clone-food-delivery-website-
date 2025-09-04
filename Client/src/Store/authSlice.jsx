@@ -37,8 +37,11 @@ export const loginUser= createAsyncThunk(
             return response.data;
         }
         catch(error){
-            return rejectWithValue(error)
-        }
+            // Only send back safe, serializable info
+            return rejectWithValue(
+                error.response?.data?.message || error.message
+            )
+        }    
     }
 )
 export const checkAuth= createAsyncThunk(
@@ -143,10 +146,16 @@ const authSlice = createSlice({
                 state.error= null;
             })
             .addCase(checkAuth.fulfilled,(state,action)=>{
-                state.loading= false;
-                state.isAuthenticated= !!action.payload
-                state.user= action.payload;
+            state.loading= false;
+            if(action.payload && action.payload._id){  // or any field you expect
+            state.isAuthenticated = true;
+            state.user = action.payload;
+            } else {
+            state.isAuthenticated = false;
+            state.user = null;
+                }
             })
+
             .addCase(checkAuth.rejected,(state,action)=>{
                 state.loading= false;
                 state.error= action.payload?.message|| "something went worng";

@@ -8,10 +8,9 @@ import {z} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
 
 
-import axiosClient from '../axiosClient/axiosClient'
 
 const signupSchema= z.object({
-    emailId:z.string().email(),
+    email:z.string().email(),
     password:z.string().min(8,"Password should contain atleast 8 character")
 })
 function Login(){
@@ -26,9 +25,18 @@ function Login(){
     },[isAuthenticated])
 
     const onSubmit=async (data)=>{
-        // const response = await axiosClient("/user/register")
-        // console.log(response)
-      dispatch(loginUser(data))
+    try {
+    console.log("Form Data", data);
+    const reply = await dispatch(loginUser(data));
+    console.log("reply", reply);
+    if (reply.payload.success){
+        navigate(`/otpverification/${data.email}/${data.phone}`)
+    }
+  } catch (err) {
+    console.error("Error in registerUser:", err);
+  } finally {
+    console.log("this is end");
+  }
     }
 
     const submittedData= (data)=>{
@@ -48,13 +56,13 @@ function Login(){
           <span className="label-text">Email</span>
         </label>
         <input
-          {...register("emailId")}
+          {...register("email")}
           placeholder="Enter Email"
           autoFocus
-          className={`input input-bordered w-full ${errors.emailId && 'input-error'}`}
+          className={`input input-bordered w-full ${errors.email && 'input-error'}`}
         />
-        {errors.emailId && (
-          <span className="text-error text-sm mt-1">{errors.emailId.message}</span>
+        {errors.email && (
+          <span className="text-error text-sm mt-1">{errors.email.message}</span>
         )}
       </div>
 
