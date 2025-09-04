@@ -13,6 +13,8 @@ import Signup from './pages/signupPage'
 import OtpVerification from './pages/otpVerificationPage'
 import { checkAuth } from './Store/authSlice'
 import { useEffect } from 'react'
+import ForgotPassword from './pages/forgotPassword'
+import ResetPassword from './pages/resetPassword'
 function App() {
    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
   console.log(user)
@@ -38,7 +40,9 @@ function App() {
           <Route path='/login' element ={<Login></Login>}></Route>
           <Route path ='/signup' element ={<Signup></Signup>}></Route>
           <Route path ='/otpverification/:email/:phone' element ={<OtpVerification></OtpVerification>}></Route>
-
+          <Route path ='/forgotPassword' element ={<ForgotPassword></ForgotPassword>}></Route>
+          <Route path ='/resetPassword/:token' element ={<ResetPassword></ResetPassword>}></Route>
+          
           <Route element={<SecondaryHome></SecondaryHome>}>
             <Route path="/Restaurants" element={<Restaurant></Restaurant>}></Route>
             <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>

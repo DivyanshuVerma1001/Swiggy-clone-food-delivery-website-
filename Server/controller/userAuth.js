@@ -264,7 +264,7 @@ const logout = async (req,res)=>{
   user.resetPassword.resetPasswordExpire= Date.now() + 15 * 60 * 1000;
   user.resetPassword.resetPasswordToken=resetToken
   await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${process.env.FRONTEND_URL}/password/reset/${resetToken}`;
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
 
   const message = `Your Reset Password Token is:- \n\n ${resetPasswordUrl} \n\n If you have not requested this email then please ignore it.`;
 

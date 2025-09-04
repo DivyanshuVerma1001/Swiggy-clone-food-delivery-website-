@@ -80,6 +80,11 @@ function Login(){
           <span className="text-error text-sm mt-1">{errors.password.message}</span>
         )}
       </div>
+      <div className= "text-center mt-6">
+        <span className= "text-sm">
+          <NavLink to ='/forgotPassword' className= "link link-primary ">forgot password ?</NavLink>
+        </span>
+      </div>
 
       <button type="submit" disabled={loading} className={`btn btn-primary w-full mt-4 ${loading? 'loading':''}`}>
         {loading?"Logging in...":"Log in"}
