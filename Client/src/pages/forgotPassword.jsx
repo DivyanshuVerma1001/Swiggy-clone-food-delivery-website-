@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import axiosClient from "../axiosClient/axiosClient";
+import { toast } from "react-toastify";
+
 const ForgotPassword = () => {
  const {isAuthenticated,error,loading} = useSelector((state)=>state.auth)
   const [email, setEmail] = useState("");
@@ -10,10 +12,11 @@ const ForgotPassword = () => {
     await axiosClient.post(
         "http://localhost:3000/user/forgotPassword",{ email },)
       .then((res) => {
+   
         toast.success(res.data.message);
       })
       .catch((error) => {
-        // toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
       });
   };
 

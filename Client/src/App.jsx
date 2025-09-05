@@ -2,6 +2,7 @@
 import './App.css'
 import Restaurant from './Components/Restaurant'
 import Home from './Components/Home'
+import { ToastContainer } from "react-toastify";
 import {BrowserRouter,Routes, Route} from "react-router"
 import RestaurantMenu from './Components/RestaurantMenu'
 import SearchFood from './Components/SearchFood'
@@ -48,8 +49,10 @@ function App() {
             <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
             <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
           </Route>  
-          <Route path="/checkout" element={<Checkout></Checkout>}></Route>    
+          <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
+          
         </Routes>
+         <ToastContainer theme="colored"/>   
       </BrowserRouter>
     
        

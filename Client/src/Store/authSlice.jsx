@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import axiosClient from "../axiosClient/axiosClient"
+import { toast } from "react-toastify";
 
 export const registerUser= createAsyncThunk(
     'auth/register',
@@ -44,6 +45,43 @@ export const loginUser= createAsyncThunk(
         }    
     }
 )
+
+
+export const googleLoginUser= createAsyncThunk(
+    'auth/googleLogin',
+    async (code,{rejectWithValue})=>{
+        try{
+            const response = await axiosClient.get(`/user/googleLogin?code=${code}`,);
+            return response.data;
+        }
+        catch(error){
+            // Only send back safe, serializable info
+            return rejectWithValue(
+                error.response?.data?.message || error.message
+            )
+        }    
+    }
+)
+
+
+export const googleRegisterUser= createAsyncThunk(
+    'auth/googleRegister',
+    async (code,{rejectWithValue})=>{
+        try{
+            const response = await axiosClient.get(`/user/googleRegister?code=${code}`,);
+            return response.data;
+        }
+        catch(error){
+            // Only send back safe, serializable info
+            return rejectWithValue(
+                error.response?.data?.message || error.message
+            )
+        }    
+    }
+)
+
+
+
 export const checkAuth= createAsyncThunk(
     'auth/check',
     async (_,{rejectWithValue})=>{
@@ -139,7 +177,44 @@ const authSlice = createSlice({
                 state.user= null
 
             })
+            //google login user cases;
+            .addCase(googleLoginUser.pending,(state)=>{
+                state.loading= true;
+                state.error= null;
+            })
+            .addCase(googleLoginUser.fulfilled,(state,action)=>{
+                state.loading= false;
+                state.isAuthenticated= !!action.payload
+                state.user= action.payload;
+            })
+            .addCase(googleLoginUser.rejected,(state,action)=>{
+                state.loading= false;
+                state.error= action.payload?.message|| "something went worng";
+                state.isAuthenticated= false;
+                state.user= null
+
+            })
+            //google register user cases;
+            .addCase(googleRegisterUser.pending,(state)=>{
+                state.loading= true;
+                state.error= null;
+            })
+            .addCase(googleRegisterUser.fulfilled,(state,action)=>{
+                state.loading= false;
+                state.isAuthenticated= !!action.payload
+                state.user= action.payload;
+            })
+            .addCase(googleRegisterUser.rejected,(state,action)=>{
+                state.loading= false;
+                state.error= action.payload?.message|| "something went worng";
+                state.isAuthenticated= false;
+                state.user= null
+                console.log("error in google register",action.payload);
+                toast.error(state.error);
+            })
             
+
+
             //check user cases;
             .addCase(checkAuth.pending,(state)=>{
                 state.loading= true;

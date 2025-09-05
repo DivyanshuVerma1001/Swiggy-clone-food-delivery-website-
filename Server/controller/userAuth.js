@@ -218,7 +218,7 @@ const login = async (req, res) => {
         res.cookie('token',token,{maxAge:60*60*1000});
       const reply={
             name:userData.name,
-            emailId:userData.email,
+            email:userData.email,
             _id:userData._id
         }
       res.status(201).json({

@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router'
 
 import {z} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
+import GoogleLoginWrapper from "../googleAuth/googleLoginWrapper";
 
 
 
@@ -42,60 +43,112 @@ function Login(){
     const submittedData= (data)=>{
         console.log(data)
     }
-
+    
 
     return (
-  <>
+<>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 via-white to-purple-50 px-4">
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="min-h-screen flex flex-col justify-center items-center max-w-xl mx-auto gap-4 p-6 shadow-xl bg-base-100 rounded-xl"
+      className="w-full max-w-md bg-white shadow-xl rounded-2xl p-8 border border-gray-100"
     >
+      {/* Title */}
+      <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
+        Welcome Back
+      </h2>
+      <p className="text-gray-600 text-center mb-6">
+        Log in to your account to continue
+      </p>
 
-      <div className="form-control w-full">
+      {/* Google Auth */}
+      <GoogleLoginWrapper />
+
+      {/* Divider */}
+      <div className="flex items-center my-6">
+        <div className="flex-grow border-t border-gray-300"></div>
+        <span className="px-3 text-sm text-gray-500">or</span>
+        <div className="flex-grow border-t border-gray-300"></div>
+      </div>
+
+      {/* Email */}
+      <div className="form-control w-full mb-4">
         <label className="label">
-          <span className="label-text">Email</span>
+          <span className="label-text text-gray-700 font-medium">Email</span>
         </label>
         <input
           {...register("email")}
           placeholder="Enter Email"
           autoFocus
-          className={`input input-bordered w-full ${errors.email && 'input-error'}`}
+          className={`input input-bordered w-full rounded-lg focus:ring-2 focus:ring-purple-500 ${
+            errors.email && "input-error"
+          }`}
         />
         {errors.email && (
-          <span className="text-error text-sm mt-1">{errors.email.message}</span>
+          <span className="text-error text-sm mt-1">
+            {errors.email.message}
+          </span>
         )}
       </div>
 
-      <div className="form-control w-full">
+      {/* Password */}
+      <div className="form-control w-full mb-2">
         <label className="label">
-          <span className="label-text">Password</span>
+          <span className="label-text text-gray-700 font-medium">
+            Password
+          </span>
         </label>
         <input
           {...register("password")}
           type="password"
           placeholder="Enter Password"
-        className={`input input-bordered w-full ${errors.password && 'input-error'}`}
+          className={`input input-bordered w-full rounded-lg focus:ring-2 focus:ring-purple-500 ${
+            errors.password && "input-error"
+          }`}
         />
         {errors.password && (
-          <span className="text-error text-sm mt-1">{errors.password.message}</span>
+          <span className="text-error text-sm mt-1">
+            {errors.password.message}
+          </span>
         )}
       </div>
-      <div className= "text-center mt-6">
-        <span className= "text-sm">
-          <NavLink to ='/forgotPassword' className= "link link-primary ">forgot password ?</NavLink>
-        </span>
+
+      {/* Forgot Password */}
+      <div className="text-right mb-4">
+        <NavLink
+          to="/forgotPassword"
+          className="text-sm text-purple-600 hover:underline"
+        >
+          Forgot password?
+        </NavLink>
       </div>
 
-      <button type="submit" disabled={loading} className={`btn btn-primary w-full mt-4 ${loading? 'loading':''}`}>
-        {loading?"Logging in...":"Log in"}
+      {/* Submit Button */}
+      <button
+        type="submit"
+        disabled={loading}
+        className={`w-full py-3 rounded-lg font-semibold text-white shadow-md transition duration-200 ${
+          loading
+            ? "bg-purple-400 cursor-not-allowed"
+            : "bg-purple-600 hover:bg-purple-700"
+        }`}
+      >
+        {loading ? "Logging in..." : "Log In"}
       </button>
-      <div className= "text-center mt-6">
-        <span className= "text-sm">Already have an account?{' '}
-          <NavLink to ='/signup' className= "link link-primary ">Sign up</NavLink>
-        </span>
+
+      {/* Signup Link */}
+      <div className="mt-6 text-center text-sm">
+        Don’t have an account?{" "}
+        <NavLink
+          to="/signup"
+          className="text-purple-600 hover:underline font-medium"
+        >
+          Sign up
+        </NavLink>
       </div>
     </form>
-  </>
+  </div>
+</>
+
 );
 
 }

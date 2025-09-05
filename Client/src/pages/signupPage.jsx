@@ -6,6 +6,7 @@ import { NavLink, useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { registerUser } from '../Store/authSlice';
 import OtpVerification from './otpVerificationPage';
+import GoogleRegisterWrapper from '../googleAuth/googleRegisterWrapper';
 
 //Schema validation for  signup 
 const signupSchema = z.object({
@@ -48,7 +49,8 @@ return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="min-h-screen flex flex-col justify-center items-center max-w-xl mx-auto gap-4 p-6 shadow-xl bg-base-100 rounded-xl"
-    >
+    > 
+      <GoogleRegisterWrapper></GoogleRegisterWrapper>
       {/* First Name */}
       <div className="w-full flex flex-col">
         <label className="mb-1 text-sm font-medium">Name</label>

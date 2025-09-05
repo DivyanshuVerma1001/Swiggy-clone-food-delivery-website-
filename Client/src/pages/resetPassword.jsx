@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-import { Navigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import axiosClient from "../axiosClient/axiosClient";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 
 const ResetPassword = () => {
@@ -11,19 +11,24 @@ const ResetPassword = () => {
   const { token } = useParams();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+   const navigate = useNavigate()
   const handleResetPassword = async (e) => {
     e.preventDefault();
     await axiosClient.post(`/user/resetPassword/${token}`,
         { password, confirmPassword }
       )
-      .then((res) => {
-        // toast.success(res.data.message);
-        // setUser(res.data.user);
+      .then(async (res) => {
         console.log("password change successfully")
+        // toast.success(res.data.message);
+        
+        
+        await setTimeout(() => {
+         navigate('/login');
+        }, 3000);
+        
       })
       .catch((error) => {
-        // toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
         console.log(error)
       });
   };
