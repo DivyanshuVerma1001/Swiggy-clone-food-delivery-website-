@@ -1,5 +1,5 @@
 import { useState } from "react"
-import RestInfo from "./RestInfo"
+import RestInfo from "../RestInfo"
 export default function MenuCard({foodSelected,menuItems}){
     const[isOpen,setIsOpen]=useState(true)
     if("categories" in menuItems){

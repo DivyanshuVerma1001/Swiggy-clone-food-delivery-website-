@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import axiosClient from "../axiosClient/axiosClient";
+import axiosClient from "../../axiosClient/axiosClient";
 import { toast } from "react-toastify";
 
 const ForgotPassword = () => {

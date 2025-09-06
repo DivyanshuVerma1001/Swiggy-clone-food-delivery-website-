@@ -4,9 +4,9 @@ import {z} from 'zod'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router';
 import { useEffect } from 'react';
-import { registerUser } from '../Store/authSlice';
+import { registerUser } from '../../Store/authSlice';
 import OtpVerification from './otpVerificationPage';
-import GoogleRegisterWrapper from '../googleAuth/googleRegisterWrapper';
+import GoogleRegisterWrapper from '../../googleAuth/googleRegisterWrapper';
 
 //Schema validation for  signup 
 const signupSchema = z.object({

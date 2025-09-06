@@ -1,4 +1,4 @@
-import { imageGridCards } from "../Utils/Grocery"
+import { imageGridCards } from "../../Utils/Grocery"
 import GroceryCard from "./GroceryCard"
 export default function GroceryOption(){
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Navigate, useNavigate, useParams } from "react-router";
-import axiosClient from "../axiosClient/axiosClient";
+import axiosClient from "../../axiosClient/axiosClient";
 import { toast } from "react-toastify";
 
 

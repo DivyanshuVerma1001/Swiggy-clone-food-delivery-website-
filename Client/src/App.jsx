@@ -1,21 +1,21 @@
 
 import './App.css'
-import Restaurant from './Components/Restaurant'
-import Home from './Components/Home'
+import Restaurant from './Components/RestaurantPageComponents/Restaurant'
+import Home from './pages/Home'
 import { ToastContainer } from "react-toastify";
 import {BrowserRouter,Routes, Route} from "react-router"
-import RestaurantMenu from './Components/RestaurantMenu'
+import RestaurantMenu from './Components/MenuPageComponents/RestaurantMenu'
 import SearchFood from './Components/SearchFood'
-import SecondaryHome from './Components/SecondaryHome'
-import Login from './pages/loginPage'
+import SecondaryHome from './pages/SecondaryHome'
+import Login from './pages/AuthPages/loginPage'
 import { useDispatch, useSelector} from "react-redux"
-import Checkout from './Components/Checkout'
-import Signup from './pages/signupPage'
-import OtpVerification from './pages/otpVerificationPage'
+import Checkout from './pages/Checkout'
+import Signup from './pages/AuthPages/loginPage'
+import OtpVerification from './pages/AuthPages/otpVerificationPage';
 import { checkAuth } from './Store/authSlice'
 import { useEffect } from 'react'
-import ForgotPassword from './pages/forgotPassword'
-import ResetPassword from './pages/resetPassword'
+import ForgotPassword from './pages/AuthPages/forgotPassword';
+import ResetPassword from './pages/AuthPages/resetPassword';
 function App() {
    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
   console.log(user)

@@ -2,7 +2,7 @@ import React from "react";
 
 import axios from "axios";
 import { Navigate, useParams } from "react-router";
-import { otpVerification } from "../Store/authSlice";
+import { otpVerification } from "../../Store/authSlice";
 
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
