@@ -12,7 +12,7 @@ export default function Header(){
                     <a href="https://partner.swiggy.com/login#/swiggy">Popular Picks </a>
                     <a href="https://divyanshu-verma.me" className="border border-white py-3 px-4 rounded-2xl"target="_blank">Contact us</a>
                     <Link to ="/signup">
-                    <a className="border border-black py-3 px-4 rounded-2xl bg-black">Sign in</a>
+                    <p className="border border-black py-3 px-4 rounded-2xl bg-black">Sign in</p>
                     </Link>
                 </div>   
             </div>
@@ -30,7 +30,7 @@ export default function Header(){
             <div className="max-w-[80%] container mx-auto flex item-center justify-center">
                 
                  {/* CTA Button */}
-                <div className={`transition-all mt-10 duration-1500 delay-1000 flex gap-20 `}>
+                <div className={` mt-10 duration-1500 delay-1000 flex gap-20 `}>
                     <Link 
                         className="group relative inline-flex items-center justify-center px-12 py-4 text-lg font-bold text-white bg-black/80 rounded-full hover:bg-black transition-all duration-300 hover:scale-102 transform hover:shadow-2xl backdrop-blur-sm border-2 border-white/20 hover:border-white/40" 
                         to="/Restaurants"

@@ -10,7 +10,7 @@ import SecondaryHome from './pages/SecondaryHome'
 import Login from './pages/AuthPages/loginPage'
 import { useDispatch, useSelector} from "react-redux"
 import Checkout from './pages/Checkout'
-import Signup from './pages/AuthPages/loginPage'
+import Signup from './pages/AuthPages/signupPage'
 import OtpVerification from './pages/AuthPages/otpVerificationPage';
 import { checkAuth } from './Store/authSlice'
 import { useEffect } from 'react'
@@ -45,7 +45,7 @@ function App() {
           <Route path ='/resetPassword/:token' element ={<ResetPassword></ResetPassword>}></Route>
           
           <Route element={<SecondaryHome></SecondaryHome>}>
-            <Route path="/Restaurants" element={<Restaurant></Restaurant>}></Route>
+            <Route path="/restaurants" element={<Restaurant></Restaurant>}></Route>
             <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
             <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
           </Route>  
