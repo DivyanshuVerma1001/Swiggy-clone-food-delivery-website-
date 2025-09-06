@@ -1,5 +1,5 @@
 import { use, useState } from "react"
-import {addItems,IncrementItems,DecrementItems} from "../Store/CardSlicer"
+import {addItems,IncrementItems,DecrementItems} from "../../Store/CardSlicer"
 import {useDispatch, useSelector} from "react-redux"
 export default function RestInfo({restData ,isVeg}){
 
@@ -19,13 +19,14 @@ export default function RestInfo({restData ,isVeg}){
        
         dispatch(DecrementItems(restData));
     }
+    console.log("this is rest data :" ,restData)
     return (
         <>
         <div className="flex w-full justify-between mb-2 pb-2  mt-3 px-2 ">
             <div className="w-[70%]">
                 <p className="text-2xl text-slate-800 font-semibold mb-2">{restData?.name}</p>
                 <p><img className="h-5" src={isVeg?"../../assets/vegSymbol.png":"../../assets/nonvegSymbol.png"} alt="" /></p>
-                <p className="text-xl">+{"₹"+"defaultPrice" in restData?restData?.defaultPrice/100:565}</p>
+                <p className="text-xl">{restData?.price/100}</p>
                 <span className="text-green-700 font-bold ">{restData?.ratings?.aggregatedRating?.rating}</span>
                 <span>{"["+restData?.ratings?.aggregatedRating?.ratingCountV2 +"]"}</span>
                 <p>{restData?.description}</p>

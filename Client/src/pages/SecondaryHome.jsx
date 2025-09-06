@@ -8,7 +8,7 @@ export default function SecondaryHome(){
     return (
         <>
             <RestHeader></RestHeader>
-            <div className="mt-24 px-4"> </div>
+            <div className="mt-17 px-4"> </div>
             <Outlet  ></Outlet>
         </>        
     )
