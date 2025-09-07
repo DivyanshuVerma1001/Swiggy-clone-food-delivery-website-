@@ -30,7 +30,7 @@ export default function RestaurantMenu(){
   const [sortOrder, setSortOrder] = useState(""); // "lowToHigh" | "highToLow"
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row min-h-screen">
       {/* 🔹 Sidebar with filters */}
       <div className="bg-white/10 min-h-screen w-74 fixed left-0 top-0 p-5 pt-20 overflow-y-auto border-r-1 border-slate-400">
         <h2 className="text-2xl font-bold text-black mb-6">Filters</h2>

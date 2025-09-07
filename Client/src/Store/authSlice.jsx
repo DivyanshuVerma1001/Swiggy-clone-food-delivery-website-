@@ -52,6 +52,7 @@ export const googleLoginUser= createAsyncThunk(
     async (code,{rejectWithValue})=>{
         try{
             const response = await axiosClient.get(`/user/googleLogin?code=${code}`,);
+            console.log(response)
             return response.data;
         }
         catch(error){

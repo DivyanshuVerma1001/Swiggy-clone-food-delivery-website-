@@ -1,22 +1,31 @@
 import { use, useState } from "react"
 import {addItems,IncrementItems,DecrementItems} from "../../Store/CardSlicer"
 import {useDispatch, useSelector} from "react-redux"
+import { useNavigate } from "react-router"
 export default function RestInfo({restData ,isVeg}){
-
+    const navigate= useNavigate()
+    const {isAuthenticated}= useSelector(state=>state.auth)
     const items=useSelector(state=>state.cartslice.items)
     const element= items.find(item=>item.id===restData.id)
     const count=element?element.quantity:0;
     const dispatch=useDispatch();
     function handleAdditems(){
-       
+        if (isAuthenticated==false){
+            navigate('/login');
+        }
         dispatch(addItems(restData))
     }
     function handleIncrementItems(){
-       
+       if (isAuthenticated==false){
+            console.log("kya authenticated hai :",isAuthtenticated)
+            navigate('/login');
+        }
         dispatch(IncrementItems(restData))
     }
     function handleDecrementItems(){
-       
+        if (isAuthenticated==false){
+            navigate('/login');
+        }
         dispatch(DecrementItems(restData));
     }
     console.log("this is rest data :" ,restData)

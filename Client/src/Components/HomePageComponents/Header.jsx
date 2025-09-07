@@ -1,7 +1,9 @@
 import { Link } from "react-router"
 import TypingText from "./AnimatedTagLine"
+import { useSelector } from "react-redux"
+import { UserCircleIcon } from "@heroicons/react/24/solid"; 
 export default function Header(){
-
+    const {isAuthenticated}= useSelector(state=>state.auth)
 
     return (
         <header className="min-h-screen bg-gradient-to-br from-[#ff5200] via-[rgb(247,84,2)] to-[#ff5200] font-serif">
@@ -11,9 +13,17 @@ export default function Header(){
                     <a target="_blank" href="https://www.swiggy.com/corporate/">Best Deals</a>  
                     <a href="https://partner.swiggy.com/login#/swiggy">Popular Picks </a>
                     <a href="https://divyanshu-verma.me" className="border border-white py-3 px-4 rounded-2xl"target="_blank">Contact us</a>
-                    <Link to ="/signup">
-                    <p className="border border-black py-3 px-4 rounded-2xl bg-black">Sign in</p>
-                    </Link>
+                    {
+                        isAuthenticated?
+                        <Link to="/profile" className="flex items-center gap-2">
+                                <UserCircleIcon className="w-13 h-13 text-white hover:text-[#f8f8f8]  transition-colors duration-200" />
+                        </Link>
+                        :
+                        <Link to ="/signup">
+                            <p className="border border-black py-3 px-4 rounded-2xl bg-black">Sign in</p>
+                        </Link>
+                    }
+                    
                 </div>   
             </div>
             

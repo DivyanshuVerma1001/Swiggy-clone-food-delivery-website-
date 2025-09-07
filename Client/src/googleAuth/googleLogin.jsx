@@ -18,7 +18,7 @@ const GoogleLogin=()=>{
         try{
             if (authResult['code'])
             console.log(authResult);
-            const reply = await dispatch(googleLoginUser(authResult['code']));
+            const reply =  dispatch(googleLoginUser(authResult['code']));
          
             console.log(reply)
          
