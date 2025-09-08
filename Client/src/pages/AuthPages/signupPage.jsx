@@ -24,12 +24,13 @@ function Signup(){
     const navigate= useNavigate();
     const {isAuthenticated,loading, error}= useSelector((state)=>state.auth);
     useEffect(()=>{
-    if(isAuthenticated){
+    if(isAuthenticated && !window.location.pathname.includes("otpverification")){
         navigate('/')
       }
       },[isAuthenticated])
+
     const onSubmit= async (data)=>{
-         try {
+    try {
     console.log("Form Data", data);
     const reply = await dispatch(registerUser(data));
     console.log("reply", reply);

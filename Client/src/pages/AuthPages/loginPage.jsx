@@ -28,13 +28,11 @@ function Login(){
     const onSubmit=async (data)=>{
     try {
     console.log("Form Data", data);
-    const reply = await dispatch(loginUser(data));
+    const reply =  dispatch(loginUser(data));
     console.log("reply", reply);
-    if (reply.payload.success){
-        navigate(`/otpverification/${data.email}/${data.phone}`)
-    }
+    
   } catch (err) {
-    console.error("Error in registerUser:", err);
+    console.error("Error in login:", err);
   } finally {
     console.log("this is end");
   }
