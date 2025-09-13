@@ -13,11 +13,12 @@ export default function RestInfo({restData ,isVeg}){
         if (isAuthenticated==false){
             navigate('/login');
         }
+        console.log(restData);
         dispatch(addItems(restData))
     }
     function handleIncrementItems(){
        if (isAuthenticated==false){
-            console.log("kya authenticated hai :",isAuthtenticated)
+            console.log("kya authenticated hai :",isAuthenticated)
             navigate('/login');
         }
         dispatch(IncrementItems(restData))
@@ -28,17 +29,17 @@ export default function RestInfo({restData ,isVeg}){
         }
         dispatch(DecrementItems(restData));
     }
-    console.log("this is rest data :" ,restData)
+    // console.log("this is rest dawta :" ,restData)
     return (
         <>
         <div className="flex w-full justify-between mb-2 pb-2  mt-3 px-2 ">
             <div className="w-[70%]">
                 <p className="text-2xl text-slate-800 font-semibold mb-2">{restData?.name}</p>
                 <p><img className="h-5" src={isVeg?"../../assets/vegSymbol.png":"../../assets/nonvegSymbol.png"} alt="" /></p>
-                <p className="text-xl">{restData?.price/100}</p>
+                <p className="text-xl">₹ {restData?.price/100}</p>
                 <span className="text-green-700 font-bold ">{restData?.ratings?.aggregatedRating?.rating}</span>
-                <span>{"["+restData?.ratings?.aggregatedRating?.ratingCountV2 +"]"}</span>
-                <p>{restData?.description}</p>
+                <span className=" text-gray-600">{"["+restData?.ratings?.aggregatedRating?.ratingCountV2 +"]"}</span>
+                <p className=" text-gray-600">{restData?.description}</p>
 
             </div>
             <div className="w-[20%] relative h-36">

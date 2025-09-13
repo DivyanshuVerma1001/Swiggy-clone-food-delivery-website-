@@ -15,7 +15,7 @@ export default function MenuCard({
   if ("categories" in menuItems) {
     return (
       <div className="w-full">
-        <p className="font-bold text-3xl mb-5 bg-amber-600 p-2 text-white">
+        <p className="font-bold text-3xl text-center mb-5 p-2 mt-5 ">
           {menuItems.title}
         </p>
         <div>
@@ -40,7 +40,7 @@ export default function MenuCard({
     return (
       <div className="w-full">
         <div className="flex justify-between">
-          <p className="font-bold text-3xl mb-3">{menuItems.title}</p>
+          <p className="font-bold text-2xl mb-3">{menuItems.title}</p>
           <button onClick={() => setIsOpen(!isOpen)}>
             <img
               className={`h-9 mr-10 transform transition-transform duration-300 ${
@@ -107,7 +107,7 @@ export default function MenuCard({
     <div className="w-full">
       {/* Section Header */}
       <div className="flex justify-between">
-        <p className="font-bold text-3xl mb-7">{menuItems.title}</p>
+        <p className="font-bold text-2xl mb-7">{menuItems.title}</p>
         <button onClick={() => setIsOpen(!isOpen)}>
           <img
             className={`h-9 mr-10 transform transition-transform duration-300 ${

@@ -250,6 +250,7 @@ const logout = async (req,res)=>{
 }
 
  const forgotPassword = async (req, res) => {
+console.log("forgot password api called")
   const user = await User.findOne({
     email: req.body.email,
     accountVerified: true,

@@ -48,9 +48,10 @@ function App() {
             <Route path="/restaurants" element={<Restaurant></Restaurant>}></Route>
             <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
             <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
+           <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
+
           </Route>  
           
-          <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
           
         </Routes>
          <ToastContainer theme="colored"/>   

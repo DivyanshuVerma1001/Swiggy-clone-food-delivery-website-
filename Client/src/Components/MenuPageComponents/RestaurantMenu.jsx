@@ -32,7 +32,7 @@ export default function RestaurantMenu(){
   return (
     <div className="flex flex-row min-h-screen">
       {/* 🔹 Sidebar with filters */}
-      <div className="bg-white/10 min-h-screen w-74 fixed left-0 top-0 p-5 pt-20 overflow-y-auto border-r-1 border-slate-400">
+      <div className="bg-white/10 max-h-screen w-74 sticky top-0 p-5 pt-20 overflow-y-auto border-r-1 border-slate-400">
         <h2 className="text-2xl font-bold text-black mb-6">Filters</h2>
 
         {/* Veg / Nonveg Toggle */}
@@ -145,7 +145,7 @@ export default function RestaurantMenu(){
       </div>
 
       {/* 🔹 Main Content */}
-      <div className="ml-74 w-[80%] mx-auto mt-20">
+      <div className=" w-[80%] mx-auto mt-20">
         <div className="w-[60%] mx-auto mt-20">
           <Link to={`/city/delhi/${id}/search`}>
             <div className="w-full bg-[#02060C0D] flex items-center justify-between text-xl border rounded-2xl font-semibold  text-slate-400 hover:cursor-text py-3">

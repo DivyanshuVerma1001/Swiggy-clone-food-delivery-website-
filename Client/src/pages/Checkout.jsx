@@ -1,79 +1,74 @@
-// import { useSelector } from "react-redux";
-
-// import { useState } from "react";
-
-
-// export default function Checkout(){
-//     const items=useSelector(state=>state.cartslice.items);
-//     return (
-//         <div>
-//             {
-//                 items.map(value=><div className="text-5xl">{value.name}</div>)
-//             }
-//         </div>
-//     )
-// }import { useState } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router"
+import {IncrementItems,DecrementItems} from "../Store/CardSlicer"
 
 export default function CheckoutPage() {
-  const dummyItems = [
-    { id: 1, name: "Paneer Butter Masala", price: 299, qty: 1, isVeg: true },
-    { id: 2, name: "Chicken Biryani", price: 399, qty: 2, isVeg: false },
-    { id: 3, name: "Veg Burger", price: 149, qty: 1, isVeg: true },
-  ];
+  const dispatch=useDispatch();
+      const navigate= useNavigate()
+
+  const {isAuthenticated}= useSelector(state=>state.auth)
 
   const dummyAddresses = [
     { id: 1, type: "Home", details: "123 Main Street, Delhi" },
     { id: 2, type: "Work", details: "456 Corporate Lane, Delhi" },
   ];
+  const items= useSelector(state=>state.cartslice.items);
 
-  const [items, setItems] = useState(dummyItems);
   const [selectedAddress, setSelectedAddress] = useState(dummyAddresses[0].id);
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
-  const incrementQty = (id) =>
-    setItems(items.map(i => i.id === id ? { ...i, qty: i.qty + 1 } : i));
-  const decrementQty = (id) =>
-    setItems(items.map(i => i.id === id ? { ...i, qty: Math.max(i.qty - 1, 0) } : i));
 
-  const subtotal = items.reduce((acc, i) => acc + i.price * i.qty, 0);
+    function handleIncrementItems(restData){
+       if (isAuthenticated==false){
+            console.log("kya authenticated hai :",isAuthenticated)
+            navigate('/login');
+        }
+        dispatch(IncrementItems(restData))  
+    }
+    function handleDecrementItems(restData){
+        if (isAuthenticated==false){
+            navigate('/login');
+        }
+        dispatch(DecrementItems(restData));
+    }
+  const subtotal = items.reduce((acc, i) => acc + i.price/100 * i.quantity, 0);
   const deliveryFee = 49;
   const taxes = Math.round(subtotal * 0.05);
   const total = subtotal + deliveryFee + taxes;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12 px-4">
+    <div className="min-h-screen bg-gray-50 pt-15 pb-12 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Left: Cart Items */}
-        <div className="space-y-4">
+        <div className="space-y-4 ">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Cart</h2>
+          <div className="overflow-y-auto flex-col flex-y-auto max-h-[500px]">
           {items.map(item => (
             <div key={item.id} className="flex items-center justify-between bg-white p-3 rounded-2xl shadow-md">
               <div className="flex items-center gap-4">
-                <img
-                  src={`https://via.placeholder.com/80`}
-                  alt={item.name}
-                  className="h-20 w-20 object-cover rounded-xl"
-                />
+               <img draggable="false" className="h-20 w-20 object-cover rounded-xl" src={"https://media-assets.swiggy.com/swiggy/image/upload/"+item?.imageId} alt={item.name} />
+ 
                 <div>
                   <p className="font-semibold text-lg text-gray-800">{item.name}</p>
-                  <p className="font-bold text-gray-700">₹{item.price}</p>
+                  <p className="font-bold text-gray-700">₹{item.price/100}</p>
                 </div>
               </div>
               <div className="flex items-center border rounded-xl overflow-hidden">
                 <button
-                  onClick={() => decrementQty(item.id)}
+                  onClick={() => handleDecrementItems(item)}
                   className="px-3 py-1 text-lg bg-gray-100 hover:bg-gray-200"
                 >-</button>
-                <span className="px-4 py-1 text-lg">{item.qty}</span>
+                <span className="px-4 py-1 text-lg">{item.quantity}</span>
                 <button
-                  onClick={() => incrementQty(item.id)}
+                  onClick={() => handleIncrementItems(item)}
                   className="px-3 py-1 text-lg bg-gray-100 hover:bg-gray-200"
                 >+</button>
               </div>
             </div>
           ))}
+          </div>
         </div>
 
         {/* Right: Summary + Address + Payment */}
