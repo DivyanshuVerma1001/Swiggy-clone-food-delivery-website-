@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router"
 import {IncrementItems,DecrementItems} from "../Store/CardSlicer"
+import axiosClient from "../axiosClient/axiosClient";
 
 export default function CheckoutPage() {
+
+
   const dispatch=useDispatch();
       const navigate= useNavigate()
 
@@ -36,6 +39,66 @@ export default function CheckoutPage() {
   const deliveryFee = 49;
   const taxes = Math.round(subtotal * 0.05);
   const total = subtotal + deliveryFee + taxes;
+// payment gateway
+const loadScript= (src)=>{
+  return new Promise((resolve)=>{
+    const script= document.createElement('script');
+    script.src=src;
+    script.onload=()=>{
+      resolve(true)
+    }
+    script.onerror=()=>{
+      resolve(false);
+    }
+    document.body.appendChild(script);
+  })
+}
+  const onPayment = async (price)=>{
+    // create order
+    try{
+      const option= {
+   
+        totalAmount:price
+      }
+      const response= await axiosClient.post('/payment/createOrder',option)
+      const data= response.data;
+      console.log(data);
+      const paymentObject= new window.Razorpay({
+        key:import.meta.env.VITE_RAZORPAY_KEY_ID,
+        order_id:data.id,
+        //handler will will be called when payment is successfull and we want to verify it at backend 
+        handler: async function (response){
+           const option2={
+            order_id: response.razorpay_order_id,
+            payment_id:response.razorpay_payment_id,
+            signature:response.razorpay_signature,
+           }
+           axiosClient.post('/payment/verifyPayment',option2).then((res)=>{
+            console.log(res.data);
+           })
+           .catch((err)=>{
+            console.log(err)
+            if (res.data.success){
+              alert('payment success')
+            }
+            else{
+              alert ("payment failed")
+            }
+           })
+        }
+      })
+      paymentObject.open();
+    }catch(error){
+      console.log(error)
+    }
+  }
+useEffect(()=>{
+  loadScript("https://checkout.razorpay.com/v1/checkout.js")
+
+},[])
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 pt-15 pb-12 px-4">
@@ -144,7 +207,7 @@ export default function CheckoutPage() {
               <span>₹{total}</span>
             </div>
 
-            <button className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition">
+            <button onClick={()=>onPayment(total)} className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition">
               Place Order →
             </button>
           </div>
