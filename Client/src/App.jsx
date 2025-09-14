@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import { ToastContainer } from "react-toastify";
 import {BrowserRouter,Routes, Route, Navigate} from "react-router"
 import RestaurantMenu from './Components/MenuPageComponents/RestaurantMenu'
-import SearchFood from './Components/SearchFood'
+import SearchFood from './pages/SearchFood'
 import SecondaryHome from './pages/SecondaryHome'
 import Login from './pages/AuthPages/loginPage'
 import { useDispatch, useSelector} from "react-redux"

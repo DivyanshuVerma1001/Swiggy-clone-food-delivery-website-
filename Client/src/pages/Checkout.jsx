@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router"
 import {IncrementItems,DecrementItems} from "../Store/CardSlicer"
@@ -6,9 +6,8 @@ import axiosClient from "../axiosClient/axiosClient";
 
 export default function CheckoutPage() {
 
-
   const dispatch=useDispatch();
-      const navigate= useNavigate()
+  const navigate= useNavigate()
 
   const {isAuthenticated}= useSelector(state=>state.auth)
 

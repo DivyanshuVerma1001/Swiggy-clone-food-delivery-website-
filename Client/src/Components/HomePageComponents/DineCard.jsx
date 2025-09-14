@@ -44,7 +44,7 @@ export default function DineCard({ RestData }) {
         </p>
       </div>
 
-     
+
     </div>
   );
 }
