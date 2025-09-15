@@ -25,16 +25,20 @@ export default function RestHeader() {
             to="/"
             className="flex items-center gap-3 hover:text-gray-200 transition-colors"
           >
+            <div className="hover:bg-[#fd7412] hover:text-white flex items-center gap-3 p-2 rounded-2xl">
             <HomeIcon className="w-8 h-8" />
             <span className="hidden sm:inline">Home</span>
+            </div>
           </Link>
 
           <Link
             to="/restaurants"
             className="flex items-center gap-3 hover:text-gray-200 transition-colors"
           >
+            <div className="hover:bg-[#fd7412] hover:text-white flex items-center gap-3 p-2 rounded-2xl">
             <BuildingStorefrontIcon className="w-8 h-8" />
             <span className="hidden sm:inline">Restaurants</span>
+            </div>         
           </Link>
 
           {/* Cart */}

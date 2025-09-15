@@ -5,6 +5,7 @@ const paymentRouter= require('./routes/paymentRoutes')
 const DBconnect= require('./database/dbConnection')
 const cors= require('cors')
 const cookieParser = require("cookie-parser");
+const detailRouter = require("./routes/detailRoute")
 
 const app= express();
 app.use(cors({
@@ -15,6 +16,7 @@ app.use(cookieParser());
 app.use(express.json())
 app.use('/user',authRouter)
 app.use('/payment',paymentRouter)
+app.use('/detail',detailRouter)
 DBconnect()
 .then(()=>{
     console.log("Database connected successfully")

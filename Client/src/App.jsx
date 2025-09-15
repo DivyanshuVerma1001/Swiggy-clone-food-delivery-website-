@@ -17,6 +17,7 @@ import { useEffect } from 'react'
 import ForgotPassword from './pages/AuthPages/forgotPassword';
 import ResetPassword from './pages/AuthPages/resetPassword';
 import FoodDeliveryLoader from './Components/FoodDeliveryLoader';
+import ProfilePage from './pages/profile';
 
 function App() {
    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
@@ -48,7 +49,9 @@ function App() {
             <Route path="/restaurants" element={<Restaurant></Restaurant>}></Route>
             <Route path="/city/delhi/:id" element={<RestaurantMenu></RestaurantMenu>}></Route>
             <Route path="/city/delhi/:id/search" element={<SearchFood></SearchFood>}></Route>
-           <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
+            <Route path="/checkout" element={<Checkout></Checkout>}></Route> 
+           <Route path="/profile" element={<ProfilePage></ProfilePage>}></Route> 
+
 
           </Route>  
           

@@ -9,7 +9,7 @@ export default function CheckoutPage() {
   const dispatch=useDispatch();
   const navigate= useNavigate()
 
-  const {isAuthenticated}= useSelector(state=>state.auth)
+  const {isAuthenticated,user}= useSelector(state=>state.auth)
 
   const dummyAddresses = [
     { id: 1, type: "Home", details: "123 Main Street, Delhi" },
@@ -52,7 +52,7 @@ const loadScript= (src)=>{
     document.body.appendChild(script);
   })
 }
-  const onPayment = async (price)=>{
+  const onlinePayment = async (price)=>{
     // create order
     try{
       const option= {
@@ -96,7 +96,15 @@ useEffect(()=>{
 
 },[])
 
-
+const codPayment=async (data)=>{
+  try{
+    const response= await axiosClient.post("/payment/cod",data);
+    console.log("response",response)
+  }
+  catch(error){
+    console.log(error)
+  }
+}
 
 
   return (
@@ -206,7 +214,7 @@ useEffect(()=>{
               <span>₹{total}</span>
             </div>
 
-            <button onClick={()=>onPayment(total)} className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition">
+            <button onClick={()=>{paymentMethod=="cod"? codPayment({items,selectedAddress,paymentMethod,total,userId:user.user._id}):onlinePayment(total)}} className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition">
               Place Order →
             </button>
           </div>
