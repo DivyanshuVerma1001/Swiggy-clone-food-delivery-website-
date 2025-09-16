@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {  User,  Mail,  Phone,  MapPin,  Edit2,  LogOut,  List,  Home,  Calendar,  CreditCard,  Utensils,  Gift,} from "lucide-react";
 import axiosClient from "../axiosClient/axiosClient";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-export default function ProfilePage() {
-     const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
-     const navigate= useNavigate()
+export default function ProfilePage() { 
+  
+    const[addressTitle,setAddressTitle]=useState("")
+    const[addressDetail,setAddressDetail]=useState("")
+    const [addressList , setAddressList]=useState([])
+    const [addingAddress,setAddingAddress]= useState(false)
+    const [activeTab, setActiveTab] = useState("profile"); 
+    const [orderList,setOrderList]= useState([]);
+
+
+    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
+    const navigate= useNavigate()
   useEffect(()=>{
     if (!isAuthenticated){
       navigate('/')
     }
   },[])
-  const [activeTab, setActiveTab] = useState("profile"); 
-  const [orderList,setOrderList]= useState([]);
     useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -28,7 +35,30 @@ export default function ProfilePage() {
 
     if (user) fetchOrders();
   }, [user]);
-console.log("order list",orderList)
+  
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const list = await axiosClient.get("/detail/getAddress");
+        console.log("list",list)
+        setAddressList(list.data.addressList || []);
+      } catch (err) {
+        console.error("Error fetching Address", err);
+      }
+    };
+
+    if (user) fetchOrders();
+    console.log(addressList)
+  }, [user]);
+
+  const addAddress= async(data)=>{
+    try{
+      const address= await axiosClient.post('/detail/addAddress',data)
+    }catch(error){
+      console.log(error )
+    }
+  }
+console.log("order list",addressList)
   
     const user1 = {
     name: "Divyanshu Verma",
@@ -201,6 +231,14 @@ console.log("order list",orderList)
           <div className="bg-white rounded-2xl shadow-md p-6">
             <h1 className="text-2xl font-bold mb-4">Saved Addresses</h1>
             <p className="text-gray-600">No addresses saved yet 🏠</p>
+            {addingAddress===true &&(
+              <div>
+              <input type="text" value={addressTitle} onChange={(e)=>setAddressTitle(e.target.value)}/>
+              <input type="text"value={addressDetail} onChange={(e)=>setAddressDetail(e.target.value)}/>
+              <button onClick={()=>addAddress({newAddress:{title:addressTitle,address:addressDetail}})}>add address</button>
+              </div>
+            )}
+            <button onClick={()=>setAddingAddress(true)}>+</button>
           </div>
         )}
       </div>

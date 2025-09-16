@@ -63,7 +63,7 @@ const userSchema = new Schema({
     ],
     userAddresses:[
         {
-            type:String,
+            title:String,
             address:String
         }
     ]

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { IncrementItems, DecrementItems, ClearCart } from "../Store/CardSlicer";
@@ -15,12 +15,27 @@ export default function CheckoutPage() {
       navigate('/')
     }
   },[])
+  let dummyAddresses;
   const items = useSelector((state) => state.cartslice.items);
-
-  const dummyAddresses = [
+  useEffect(()=>{
+    const fetchAddress=async ()=>{
+    try{
+      const addressList= await axiosClient.get('/detail/getAddress')
+      dummyAddresses= addressList.data;
+    }catch(error){
+      console.log(error)
+      dummyAddresses = [
     { id: 1, type: "Home", details: "123 Main Street, Delhi" },
     { id: 2, type: "Work", details: "456 Corporate Lane, Delhi" },
   ];
+    }
+  }
+  fetchAddress()
+  },[user])
+  dummyAddresses = [
+    { id: 1, type: "Home", details: "123 Main Street, Delhi" },
+    { id: 2, type: "Work", details: "456 Corporate Lane, Delhi" },
+  ];  
 
   const [selectedAddress, setSelectedAddress] = useState(dummyAddresses[0].id);
   const [paymentMethod, setPaymentMethod] = useState("cod");
