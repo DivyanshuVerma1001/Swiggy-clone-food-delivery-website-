@@ -29,9 +29,13 @@ const cart=createSlice({
                 state.items=state.items.filter(items=>items.id!=action.payload.id)
                 state.count--
             }
+        },
+        ClearCart:(state,action)=>{
+            state.items=[];
+            state.count=0;
         }
     }
 
 })
-export const {addItems,IncrementItems,DecrementItems}=cart.actions;
+export const {addItems,IncrementItems,DecrementItems,ClearCart}=cart.actions;
 export default cart.reducer;

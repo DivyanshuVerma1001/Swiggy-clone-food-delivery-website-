@@ -60,6 +60,12 @@ const userSchema = new Schema({
             enum: ["cod", "online"]
         }
     }
+    ],
+    userAddresses:[
+        {
+            type:String,
+            address:String
+        }
     ]
 })
 const User = mongoose.model("UserCollection", userSchema);

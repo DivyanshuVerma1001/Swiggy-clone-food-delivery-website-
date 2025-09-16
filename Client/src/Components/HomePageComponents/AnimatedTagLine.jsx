@@ -50,21 +50,22 @@ export default function TypingText({
     <h1 className="text-4xl md:text-6xl font-extrabold text-white text-center max-w-[80%] container mx-auto ">
       {start}
       <span className="text-yellow-300">{display}</span>
-      <span className="cursor-blink">|</span>
+      <span className="typing-caret">|</span>
       {end}
     </h1>
     
-            <style jsx>{`
+            {/* <style jsx>{`
                 @keyframes blink {
                 0%   { opacity: 1; }
                 50%  { opacity: 0; }
                 100% { opacity: 1; }
                 }
-                .cursor-blink {
+                .typing-caret {
+                cursor: default;
                 display: inline-block;
                 animation: blink 1s step-start infinite;
                 }
-                `}</style>
+                `}</style> */}
   
   </>
   );

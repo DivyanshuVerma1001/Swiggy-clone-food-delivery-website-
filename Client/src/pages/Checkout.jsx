@@ -1,159 +1,179 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router"
-import {IncrementItems,DecrementItems} from "../Store/CardSlicer"
+import { useNavigate } from "react-router";
+import { IncrementItems, DecrementItems, ClearCart } from "../Store/CardSlicer";
 import axiosClient from "../axiosClient/axiosClient";
+import SuccessComponent from "../Components/CheckoutPageComponents/OrderSuccessComponent";
 
 export default function CheckoutPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const dispatch=useDispatch();
-  const navigate= useNavigate()
-
-  const {isAuthenticated,user}= useSelector(state=>state.auth)
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  useEffect(()=>{
+    if (!isAuthenticated){
+      navigate('/')
+    }
+  },[])
+  const items = useSelector((state) => state.cartslice.items);
 
   const dummyAddresses = [
     { id: 1, type: "Home", details: "123 Main Street, Delhi" },
     { id: 2, type: "Work", details: "456 Corporate Lane, Delhi" },
   ];
-  const items= useSelector(state=>state.cartslice.items);
 
   const [selectedAddress, setSelectedAddress] = useState(dummyAddresses[0].id);
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
+  // Success state
+  const [orderSuccess, setOrderSuccess] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
 
-    function handleIncrementItems(restData){
-       if (isAuthenticated==false){
-            console.log("kya authenticated hai :",isAuthenticated)
-            navigate('/login');
-        }
-        dispatch(IncrementItems(restData))  
-    }
-    function handleDecrementItems(restData){
-        if (isAuthenticated==false){
-            navigate('/login');
-        }
-        dispatch(DecrementItems(restData));
-    }
-  const subtotal = items.reduce((acc, i) => acc + i.price/100 * i.quantity, 0);
-  const deliveryFee = 49;
+  function handleIncrementItems(restData) {
+    if (!isAuthenticated) navigate("/login");
+    dispatch(IncrementItems(restData));
+  }
+  function handleDecrementItems(restData) {
+    if (!isAuthenticated) navigate("/login");
+    dispatch(DecrementItems(restData));
+  }
+
+  const subtotal = items.reduce((acc, i) => acc + (i.price / 100) * i.quantity, 0);
+  let deliveryFee = 49;
+  if (items.length==0) deliveryFee=0;
   const taxes = Math.round(subtotal * 0.05);
   const total = subtotal + deliveryFee + taxes;
-// payment gateway
-const loadScript= (src)=>{
-  return new Promise((resolve)=>{
-    const script= document.createElement('script');
-    script.src=src;
-    script.onload=()=>{
-      resolve(true)
-    }
-    script.onerror=()=>{
-      resolve(false);
-    }
-    document.body.appendChild(script);
-  })
-}
-  const onlinePayment = async (price)=>{
-    // create order
-    try{
-      const option= {
-   
-        totalAmount:price
-      }
-      const response= await axiosClient.post('/payment/createOrder',option)
-      const data= response.data;
-      console.log(data);
-      const paymentObject= new window.Razorpay({
-        key:import.meta.env.VITE_RAZORPAY_KEY_ID,
-        order_id:data.id,
-        //handler will will be called when payment is successfull and we want to verify it at backend 
-        handler: async function (response){
-           const option2={
-            order_id: response.razorpay_order_id,
-            payment_id:response.razorpay_payment_id,
-            signature:response.razorpay_signature,
-           }
-           axiosClient.post('/payment/verifyPayment',option2).then((res)=>{
-            console.log(res.data);
-           })
-           .catch((err)=>{
-            console.log(err)
-            if (res.data.success){
-              alert('payment success')
+
+  // Razorpay loader
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const onlinePayment = async (price) => {
+    try {
+      const response = await axiosClient.post("/payment/createOrder", {
+        totalAmount: price,
+      });
+      const data = response.data;
+
+      const paymentObject = new window.Razorpay({
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        order_id: data.id,
+        handler: async function (response) {
+          try {
+            const verifyRes = await axiosClient.post("/payment/verifyPayment", {
+              order_id: response.razorpay_order_id,
+              payment_id: response.razorpay_payment_id,
+              signature: response.razorpay_signature,
+            });
+
+            if (verifyRes.data.success) {
+              dispatch(ClearCart());
+              setOrderDetails({
+                items,
+                address: dummyAddresses.find((a) => a.id === selectedAddress),
+                paymentMethod,
+                total,
+              });
+              setOrderSuccess(true);
+            } else {
+              alert("Payment failed");
             }
-            else{
-              alert ("payment failed")
-            }
-           })
-        }
-      })
+          } catch (err) {
+            console.log(err);
+          }
+        },
+      });
       paymentObject.open();
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-  }
-useEffect(()=>{
-  loadScript("https://checkout.razorpay.com/v1/checkout.js")
+  };
 
-},[])
+  useEffect(() => {
+    loadScript("https://checkout.razorpay.com/v1/checkout.js");
+  }, []);
 
-const codPayment=async (data)=>{
-  try{
-    const response= await axiosClient.post("/payment/cod",data);
-    console.log("response",response)
-  }
-  catch(error){
-    console.log(error)
-  }
-}
-
+  const codPayment = async (data) => {
+    try {
+      const response = await axiosClient.post("/payment/cod", data);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-15 pb-12 px-4">
+    <div className="min-h-screen bg-gray-50 pt-15 pb-12 px-4 relative">
+      {/* ✅ Checkout Content */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-        
         {/* Left: Cart Items */}
-        <div className="space-y-4 ">
+        <div className="space-y-4">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Cart</h2>
-          <div className="overflow-y-auto flex-col flex-y-auto max-h-[500px]">
-          {items.map(item => (
-            <div key={item.id} className="flex items-center justify-between bg-white p-3 rounded-2xl shadow-md">
-              <div className="flex items-center gap-4">
-               <img draggable="false" className="h-20 w-20 object-cover rounded-xl" src={"https://media-assets.swiggy.com/swiggy/image/upload/"+item?.imageId} alt={item.name} />
- 
-                <div>
-                  <p className="font-semibold text-lg text-gray-800">{item.name}</p>
-                  <p className="font-bold text-gray-700">₹{item.price/100}</p>
+          <div className="overflow-y-auto flex-col max-h-[500px]">
+            {items.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between bg-white p-3 rounded-2xl shadow-md"
+              >
+                <div className="flex items-center gap-4">
+                  <img
+                    draggable="false"
+                    className="h-20 w-20 object-cover rounded-xl"
+                    src={
+                      "https://media-assets.swiggy.com/swiggy/image/upload/" +
+                      item?.imageId
+                    }
+                    alt={item.name}
+                  />
+                  <div>
+                    <p className="font-semibold text-lg text-gray-800">
+                      {item.name}
+                    </p>
+                    <p className="font-bold text-gray-700">₹{item.price / 100}</p>
+                  </div>
+                </div>
+                <div className="flex items-center border rounded-xl overflow-hidden">
+                  <button
+                    onClick={() => handleDecrementItems(item)}
+                    className="px-3 py-1 text-lg bg-gray-100 hover:bg-gray-200"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-1 text-lg">{item.quantity}</span>
+                  <button
+                    onClick={() => handleIncrementItems(item)}
+                    className="px-3 py-1 text-lg bg-gray-100 hover:bg-gray-200"
+                  >
+                    +
+                  </button>
                 </div>
               </div>
-              <div className="flex items-center border rounded-xl overflow-hidden">
-                <button
-                  onClick={() => handleDecrementItems(item)}
-                  className="px-3 py-1 text-lg bg-gray-100 hover:bg-gray-200"
-                >-</button>
-                <span className="px-4 py-1 text-lg">{item.quantity}</span>
-                <button
-                  onClick={() => handleIncrementItems(item)}
-                  className="px-3 py-1 text-lg bg-gray-100 hover:bg-gray-200"
-                >+</button>
-              </div>
-            </div>
-          ))}
+            ))}
           </div>
         </div>
 
-        {/* Right: Summary + Address + Payment */}
+        {/* Right: Checkout Summary */}
         <div className="bg-white rounded-2xl shadow-md p-6 space-y-4 sticky top-28">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Checkout</h2>
 
           {/* Address */}
           <div>
             <p className="font-semibold text-gray-800 mb-2">Delivery Address</p>
-            {dummyAddresses.map(addr => (
+            {dummyAddresses.map((addr) => (
               <div
                 key={addr.id}
                 onClick={() => setSelectedAddress(addr.id)}
                 className={`border p-3 rounded-xl mb-2 cursor-pointer ${
-                  selectedAddress === addr.id ? "border-[#ff5200] bg-orange-50" : "border-gray-300"
+                  selectedAddress === addr.id
+                    ? "border-[#ff5200] bg-orange-50"
+                    : "border-gray-300"
                 }`}
               >
                 <p className="font-medium text-gray-700">{addr.type}</p>
@@ -166,9 +186,13 @@ const codPayment=async (data)=>{
           <div>
             <p className="font-semibold text-gray-800 mb-2">Payment Method</p>
             <div className="flex gap-3">
-              <label className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${
-                paymentMethod === "cod" ? "border-[#ff5200] bg-orange-50" : "border-gray-300"
-              }`}>
+              <label
+                className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${
+                  paymentMethod === "cod"
+                    ? "border-[#ff5200] bg-orange-50"
+                    : "border-gray-300"
+                }`}
+              >
                 <input
                   type="radio"
                   name="payment"
@@ -177,11 +201,17 @@ const codPayment=async (data)=>{
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="accent-[#ff5200] w-4 h-4"
                 />
-                <span className="text-gray-700 font-medium text-sm">Cash on Delivery</span>
+                <span className="text-gray-700 font-medium text-sm">
+                  Cash on Delivery
+                </span>
               </label>
-              <label className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${
-                paymentMethod === "online" ? "border-[#ff5200] bg-orange-50" : "border-gray-300"
-              }`}>
+              <label
+                className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${
+                  paymentMethod === "online"
+                    ? "border-[#ff5200] bg-orange-50"
+                    : "border-gray-300"
+                }`}
+              >
                 <input
                   type="radio"
                   name="payment"
@@ -190,7 +220,9 @@ const codPayment=async (data)=>{
                   onChange={(e) => setPaymentMethod(e.target.value)}
                   className="accent-[#ff5200] w-4 h-4"
                 />
-                <span className="text-gray-700 font-medium text-sm">Online Payment</span>
+                <span className="text-gray-700 font-medium text-sm">
+                  Online Payment
+                </span>
               </label>
             </div>
           </div>
@@ -214,12 +246,47 @@ const codPayment=async (data)=>{
               <span>₹{total}</span>
             </div>
 
-            <button onClick={()=>{paymentMethod=="cod"? codPayment({items,selectedAddress,paymentMethod,total,userId:user.user._id}):onlinePayment(total)}} className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition">
+            <button
+              onClick={async () => {
+                if (items.length === 0) {
+      alert("Your cart is empty. Please add items before placing an order.");
+      return;
+    }
+                if (paymentMethod === "cod") {
+                  const res = await codPayment({
+                    items,
+                    selectedAddress,
+                    paymentMethod,
+                    total,
+                    userId: user.user._id,
+                  });
+                  dispatch(ClearCart());
+                  setOrderDetails({
+                    items,
+                    address: dummyAddresses.find((a) => a.id === selectedAddress),
+                    paymentMethod,
+                    total,
+                    orderId: res?.data?.orderId || "N/A",
+                  });
+                  setOrderSuccess(true);
+                } else {
+                  await onlinePayment(total);
+                }
+              }}
+              className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition"
+            >
               Place Order →
             </button>
           </div>
         </div>
       </div>
+
+      {/* ✅ Success Overlay */}
+      {orderSuccess && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-md z-50">
+          <SuccessComponent order={orderDetails} onClose={() => setOrderSuccess(false)} />
+        </div>
+      )}
     </div>
   );
 }

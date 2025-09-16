@@ -1,1 +1,8 @@
   @import "tailwindcss";
+html, body {
+  cursor: default;       /* sab jagah arrow cursor */
+}
+
+input, textarea, [contenteditable="true"] {
+  cursor: text;          /* sirf form fields me text cursor */
+}

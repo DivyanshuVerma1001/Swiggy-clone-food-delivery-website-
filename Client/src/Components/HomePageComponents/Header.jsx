@@ -9,7 +9,7 @@ export default function Header(){
         <header className="min-h-screen bg-gradient-to-br from-[#ff5200] via-[rgb(247,84,2)] to-[#ff5200] font-serif">
             <div className="flex justify-between container mx-auto py-8">
                 <img className="w-40 h-12" src="https://res.cloudinary.com/dutdah0l9/image/upload/v1720058694/Swiggy_logo_bml6he.png" alt="" />
-                 <div className=" text-white text-base font-bold flex gap-15 items-center ">
+                 <div className=" text-white  font-bold flex gap-15 items-center text-[20px] ">
                     <a target="_blank" href="https://www.swiggy.com/corporate/">Best Deals</a>  
                     <a href="https://partner.swiggy.com/login#/swiggy">Popular Picks </a>
                     <a href="https://divyanshu-verma.me" className="border border-white py-3 px-4 rounded-2xl"target="_blank">Contact us</a>

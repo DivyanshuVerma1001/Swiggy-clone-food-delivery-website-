@@ -77,7 +77,7 @@ const codPayment = async (req, res) => {
         address:selectedAddress,
         methodOfPayment:paymentMethod
     }
-    user.orders.push(obj);
+    user.orders.unshift(obj);
     await user.save();
     // console.log(newArray)
     res.json({
