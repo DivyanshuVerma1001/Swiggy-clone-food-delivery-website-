@@ -37,7 +37,7 @@ export default function ProfilePage() {
   }, [user]);
   
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchAddresses = async () => {
       try {
         const list = await axiosClient.get("/detail/getAddress");
         console.log("list",list)
@@ -47,8 +47,8 @@ export default function ProfilePage() {
       }
     };
 
-    if (user) fetchOrders();
-    console.log(addressList)
+    if (user) fetchAddresses();
+    console.log("address List",addressList)
   }, [user]);
 
   const addAddress= async(data)=>{
@@ -58,7 +58,7 @@ export default function ProfilePage() {
       console.log(error )
     }
   }
-console.log("order list",addressList)
+console.log("address list",addressList)
   
     const user1 = {
     name: "Divyanshu Verma",
@@ -228,19 +228,74 @@ console.log("order list",addressList)
 )}
 
         {activeTab === "address" && (
-          <div className="bg-white rounded-2xl shadow-md p-6">
-            <h1 className="text-2xl font-bold mb-4">Saved Addresses</h1>
-            <p className="text-gray-600">No addresses saved yet 🏠</p>
-            {addingAddress===true &&(
-              <div>
-              <input type="text" value={addressTitle} onChange={(e)=>setAddressTitle(e.target.value)}/>
-              <input type="text"value={addressDetail} onChange={(e)=>setAddressDetail(e.target.value)}/>
-              <button onClick={()=>addAddress({newAddress:{title:addressTitle,address:addressDetail}})}>add address</button>
-              </div>
-            )}
-            <button onClick={()=>setAddingAddress(true)}>+</button>
+  <div className="bg-white rounded-2xl shadow-md p-6">
+    <h1 className="text-2xl font-bold mb-4">Saved Addresses</h1>
+
+    {/* Show saved addresses */}
+    {addressList.length > 0 ? (
+      <div className="space-y-4">
+        {addressList.map((address) => (
+          <div
+            key={address._id}
+            className="border rounded-xl p-4 shadow-sm bg-gray-50"
+          >
+            <h2 className="font-semibold text-lg">{address.title}</h2>
+            <p className="text-gray-700">{address.address}</p>
           </div>
-        )}
+        ))}
+      </div>
+    ) : (
+      <p className="text-gray-600">No addresses saved yet 🏠</p>
+    )}
+
+    {/* Add Address Form */}
+    {addingAddress && (
+      <div className="mt-4 space-y-2">
+        <input
+          type="text"
+          placeholder="Title (e.g. Home, Office)"
+          value={addressTitle}
+          onChange={(e) => setAddressTitle(e.target.value)}
+          className="w-full border rounded-lg p-2"
+        />
+        <input
+          type="text"
+          placeholder="Address details"
+          value={addressDetail}
+          onChange={(e) => setAddressDetail(e.target.value)}
+          className="w-full border rounded-lg p-2"
+        />
+        <button
+          onClick={async () => {
+            await addAddress({
+              newAddress: { title: addressTitle, address: addressDetail },
+            });
+            setAddressTitle("");
+            setAddressDetail("");
+            setAddingAddress(false);
+            // refresh address list
+            const list = await axiosClient.get("/detail/getAddress");
+            setAddressList(list.data.addressList || []);
+          }}
+          className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Save Address
+        </button>
+      </div>
+    )}
+
+    {/* Button to open form */}
+    {!addingAddress && (
+      <button
+        onClick={() => setAddingAddress(true)}
+        className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+      >
+        + Add New Address
+      </button>
+    )}
+  </div>
+)}
+
       </div>
     </div>
   );

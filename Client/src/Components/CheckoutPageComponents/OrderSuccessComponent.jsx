@@ -1,6 +1,7 @@
 import { CheckCircle } from "lucide-react";
 
 export default function SuccessComponent({ order, onClose }) {
+  console.log("order details in success components",order)
   return (
     <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 p-6 text-center">
       <div className="flex items-center justify-center mb-4">
@@ -13,7 +14,7 @@ export default function SuccessComponent({ order, onClose }) {
       {/* Address */}
       <div className="mb-4 text-left">
         <p className="font-semibold text-gray-800">Delivery Address:</p>
-        <p className="text-gray-600">{order.address.details}</p>
+        <p className="text-gray-600">{order.address.address}</p>
       </div>
 
       {/* Items */}

@@ -15,29 +15,27 @@ export default function CheckoutPage() {
       navigate('/')
     }
   },[])
-  let dummyAddresses;
+  const[ dummyAddresses,setDummyAddresses]=useState([])
   const items = useSelector((state) => state.cartslice.items);
   useEffect(()=>{
     const fetchAddress=async ()=>{
     try{
       const addressList= await axiosClient.get('/detail/getAddress')
-      dummyAddresses= addressList.data;
+      setDummyAddresses(addressList.data.addressList || [])
     }catch(error){
       console.log(error)
-      dummyAddresses = [
-    { id: 1, type: "Home", details: "123 Main Street, Delhi" },
-    { id: 2, type: "Work", details: "456 Corporate Lane, Delhi" },
-  ];
     }
   }
   fetchAddress()
   },[user])
-  dummyAddresses = [
-    { id: 1, type: "Home", details: "123 Main Street, Delhi" },
-    { id: 2, type: "Work", details: "456 Corporate Lane, Delhi" },
-  ];  
+console.log("address are :" ,dummyAddresses)
+const [selectedAddress, setSelectedAddress] = useState(null);
 
-  const [selectedAddress, setSelectedAddress] = useState(dummyAddresses[0].id);
+useEffect(() => {
+  if (dummyAddresses.length > 0) {
+    setSelectedAddress(dummyAddresses[0]._id);
+  }
+}, [dummyAddresses]);
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
   // Success state
@@ -181,20 +179,22 @@ export default function CheckoutPage() {
           {/* Address */}
           <div>
             <p className="font-semibold text-gray-800 mb-2">Delivery Address</p>
+            <div className="flex flex-col overflow-y-auto max-h-45">
             {dummyAddresses.map((addr) => (
               <div
                 key={addr.id}
-                onClick={() => setSelectedAddress(addr.id)}
+                onClick={() => setSelectedAddress(addr._id)}
                 className={`border p-3 rounded-xl mb-2 cursor-pointer ${
-                  selectedAddress === addr.id
+                  selectedAddress === addr._id
                     ? "border-[#ff5200] bg-orange-50"
                     : "border-gray-300"
                 }`}
               >
-                <p className="font-medium text-gray-700">{addr.type}</p>
-                <p className="text-gray-600 text-sm">{addr.details}</p>
+                <p className="font-medium text-gray-700">{addr.title}</p>
+                <p className="text-gray-600 text-sm">{addr.address}</p>
               </div>
             ))}
+            </div>
           </div>
 
           {/* Payment */}
@@ -278,11 +278,12 @@ export default function CheckoutPage() {
                   dispatch(ClearCart());
                   setOrderDetails({
                     items,
-                    address: dummyAddresses.find((a) => a.id === selectedAddress),
+                    address: dummyAddresses.find((a) => a._id === selectedAddress),
                     paymentMethod,
                     total,
                     orderId: res?.data?.orderId || "N/A",
                   });
+                  console.log("order details",orderDetails);
                   setOrderSuccess(true);
                 } else {
                   await onlinePayment(total);
