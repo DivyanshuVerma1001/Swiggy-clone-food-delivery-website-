@@ -46,122 +46,113 @@ function Signup(){
 
 
 return (
-  <>
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="min-h-screen flex flex-col justify-center items-center max-w-xl mx-auto gap-4 p-6 shadow-xl bg-base-100 rounded-xl"
-    > 
-      <GoogleRegisterWrapper></GoogleRegisterWrapper>
-      {/* First Name */}
-      <div className="w-full flex flex-col">
-        <label className="mb-1 text-sm font-medium">Name</label>
-        <input
-          {...register("name")}
-          placeholder="Enter Name"
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.name ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.name && (
-          <span className="text-red-500 text-sm mt-1">{errors.name.message}</span>
-        )}
-      </div>
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 to-red-100">
+    <div className="flex w-full max-w-5xl bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl overflow-hidden">
+      
+      {/* Left side illustration */}
+      <div className="hidden md:flex w-1/2 bg-[url('/food-bg.jpg')] bg-cover bg-center" />
 
-      {/* Email */}
-      <div className="w-full flex flex-col">
-        <label className="mb-1 text-sm font-medium">Email</label>
-        <input
-          {...register("email")}
-          placeholder="Enter Email"
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.email ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.email && (
-          <span className="text-red-500 text-sm mt-1">{errors.email.message}</span>
-        )}
-      </div>
+      {/* Right side form */}
+      <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
+        <h2 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
+        <p className="text-sm text-gray-500 mb-6">Get your favorite meals delivered in minutes 🚀</p>
 
-      {/* Phone */}
-      <div className="w-full flex items-center gap-2">
-        <span className="text-sm font-medium">+91</span>
-        <input
-          type="text"
-          placeholder="Phone number"
-          required
-          {...register("phone")}
-          className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300"
-        />
-      </div>
+        <GoogleRegisterWrapper />
 
-      {/* Password */}
-      <div className="w-full flex flex-col">
-        <label className="mb-1 text-sm font-medium">Password</label>
-        <input
-          {...register("password")}
-          type="password"
-          placeholder="Enter Password"
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-            errors.password ? "border-red-500" : "border-gray-300"
-          }`}
-        />
-        {errors.password && (
-          <span className="text-red-500 text-sm mt-1">{errors.password.message}</span>
-        )}
-      </div>
-
-      {/* Verification Method */}
-      <div className="w-full flex flex-col mt-2">
-        <p className="mb-1 text-sm font-medium">Select verification method</p>
-        <div className="flex gap-4">
-          <label className="flex items-center gap-1 text-sm">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Name</label>
             <input
-              type="radio"
-              name="verificationMethod"
-              value="email"
-              {...register("verificationMethod")}
-              required
-              className="accent-blue-500"
+              {...register("name")}
+              placeholder="John Doe"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 ${
+                errors.name ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            Email
-          </label>
-          <label className="flex items-center gap-1 text-sm">
+            {errors.name && <span className="text-red-500 text-xs">{errors.name.message}</span>}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Email</label>
             <input
-              type="radio"
-              name="verificationMethod"
-              value="phone"
-              {...register("verificationMethod")}
-              required
-              className="accent-blue-500"
+              {...register("email")}
+              type="email"
+              placeholder="example@email.com"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
             />
-            Phone Number
-          </label>
-        </div>
-      </div>
+            {errors.email && <span className="text-red-500 text-xs">{errors.email.message}</span>}
+          </div>
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        disabled={loading}
-        className={`w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-      >
-        {loading ? "Signing up..." : "Sign up"}
-      </button>
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Phone</label>
+            <div className="flex">
+              <span className="px-3 py-2 border rounded-l-lg bg-gray-100">+91</span>
+              <input
+                {...register("phone")}
+                placeholder="9876543210"
+                className="flex-1 px-4 py-2 border-t border-b border-r rounded-r-lg focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+          </div>
 
-      {/* Login Link */}
-      <div className="text-center mt-6">
-        <span className="text-sm">
+          {/* Password */}
+          <div>
+            <label className="block text-sm font-medium mb-1">Password</label>
+            <input
+              {...register("password")}
+              type="password"
+              placeholder="••••••••"
+              className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-orange-500 ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.password && <span className="text-red-500 text-xs">{errors.password.message}</span>}
+          </div>
+
+          {/* Verification Method */}
+          <div>
+            <p className="text-sm font-medium mb-2">Verification Method</p>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input type="radio" value="email" {...register("verificationMethod")} className="accent-orange-500" />
+                Email
+              </label>
+              <label className="flex items-center gap-2">
+                <input type="radio" value="phone" {...register("verificationMethod")} className="accent-orange-500" />
+                Phone
+              </label>
+            </div>
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 rounded-lg text-white font-semibold bg-gradient-to-r from-orange-500 to-red-500 hover:scale-[1.02] transition ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+          >
+            {loading ? "Signing up..." : "Sign Up"}
+          </button>
+        </form>
+
+        {/* Switch to Login */}
+        <p className="text-center text-sm mt-6">
           Already have an account?{" "}
-          <NavLink to="/login" className="text-blue-600 hover:underline">
+          <NavLink to="/login" className="text-orange-600 hover:underline">
             Login
           </NavLink>
-        </span>
+        </p>
       </div>
-    </form>
-  </>
+    </div>
+  </div>
 );
+
 }
 export default Signup
 
