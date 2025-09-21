@@ -144,6 +144,8 @@ const authSlice = createSlice({
                 state.error= action.payload?.message ||"something went wrong";
                 state.isAuthenticated= false;
                 state.user= null
+                console.log("error in registreation :",state.error)
+                toast.error(state.error);
             })
             //otpverification user cases
             .addCase(otpVerification.pending,(state)=>{
