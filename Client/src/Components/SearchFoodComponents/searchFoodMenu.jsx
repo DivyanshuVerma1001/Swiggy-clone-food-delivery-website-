@@ -32,7 +32,7 @@ export default function SearchMenuCard({ menuItems, query }) {
               className={`h-9 mr-10 transform transition-transform duration-300 ${
                 isOpen ? "rotate-180" : "rotate-0"
               }`}
-              src="../../assets/dropDown.png"
+              src="/assets/dropDown.png"
               alt="dropdown"
             />
           </button>
@@ -56,7 +56,7 @@ export default function SearchMenuCard({ menuItems, query }) {
             className={`h-9 mr-10 transform transition-transform duration-300 ${
               isOpen ? "rotate-180" : "rotate-0"
             }`}
-            src="../../assets/dropDown.png"
+            src="/assets/dropDown.png"
             alt="dropdown"
           />
         </button>
