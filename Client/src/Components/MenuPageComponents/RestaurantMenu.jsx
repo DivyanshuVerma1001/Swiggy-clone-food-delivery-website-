@@ -2,6 +2,7 @@ import { useParams } from "react-router"
 import { useState, useEffect } from "react";
 import MenuCard from "./MenuCard";
 import { Link } from "react-router";
+import MenuShimmer from "./MenuShimmer";
 export default function RestaurantMenu() {
   let { id } = useParams();
   const [RestData, setRestData] = useState([])
@@ -159,17 +160,21 @@ export default function RestaurantMenu() {
 
         {/* Menu Items */}
         <div className="w-[80%] mx-auto mt-20">
-          {RestData.map((menuItems) => (
-            <MenuCard
-              key={menuItems?.card?.card?.title}
-              foodSelected={selected}
-              priceRange={priceRange}
-              minRating={minRating}
-              bestsellerOnly={bestsellerOnly}
-              sortOrder={sortOrder}
-              menuItems={menuItems?.card?.card}
-            />
-          ))}
+          {RestData.length === 0 ? (
+            <MenuShimmer />   // Data nahi aaya → shimmer show karo
+          ) : (
+            RestData.map((menuItems) => (
+              <MenuCard
+                key={menuItems?.card?.card?.title}
+                foodSelected={selected}
+                priceRange={priceRange}
+                minRating={minRating}
+                bestsellerOnly={bestsellerOnly}
+                sortOrder={sortOrder}
+                menuItems={menuItems?.card?.card}
+              />
+            ))
+          )}
         </div>
       </div>
     </div>
