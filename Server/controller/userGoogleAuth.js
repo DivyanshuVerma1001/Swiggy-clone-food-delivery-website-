@@ -5,6 +5,7 @@ const axios = require("axios");
 const User = require('../model/user');
 const googleLogin= async (req,res)=>{
     try{
+      console.log("google login api started ")
         const {code}=req.query;
         console.log("code mil gya ",code)
         const googleRes= await oauth2client.getToken(code);
@@ -27,6 +28,7 @@ const googleLogin= async (req,res)=>{
             email:userData.email,
             _id:userData._id
         }
+        console.log("google login api ne reponse bhi de diya ")
       res.status(201).json({
             user:reply,
             message:"login successfully" 

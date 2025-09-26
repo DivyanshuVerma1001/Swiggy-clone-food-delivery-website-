@@ -21,7 +21,7 @@ import ProfilePage from './pages/profile';
 
 function App() {
    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
-  console.log(user)
+  console.log("this is app.jsx user data:",user)
   console.log("authenticated",isAuthenticated)
   const dispatch= useDispatch()
   useEffect(()=>{
