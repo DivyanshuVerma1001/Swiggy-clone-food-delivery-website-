@@ -145,7 +145,7 @@ export default function RestaurantMenu() {
       <div className=" w-[80%] mx-auto mt-20">
         <div className="w-[60%] mx-auto mt-20">
           <Link to={`/city/delhi/${id}/search`}>
-            <div className="w-full bg-[#02060C0D] flex items-center justify-between text-xl border rounded-2xl font-semibold  text-slate-400 hover:cursor-text py-3">
+            <div className="w-full bg-[#02060C0D] flex items-center justify-between text-xl border rounded-2xl  font-semibold  text-slate-400 hover:cursor-text py-3">
               <p className="mx-auto">Search for Dishes</p>
               <span className="h-6 pr-10">
                 <img

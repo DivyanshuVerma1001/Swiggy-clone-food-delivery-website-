@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   useEffect(()=>{
     if (!isAuthenticated){
-      navigate('/')
+      navigate('/login')
     }
   },[])
   const[ dummyAddresses,setDummyAddresses]=useState([])

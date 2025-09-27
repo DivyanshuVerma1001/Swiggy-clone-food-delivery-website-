@@ -51,7 +51,7 @@ export default function SearchFood() {
     <div className= "min-h-screen">
       <div className="w-[80%] mx-auto mt-20">
         <input
-          className="w-full h-15 mt-10 border-gray-200 border-2 pl-10 text-2xl bg-gray-100 rounded-2xl"
+          className="w-full h-15 mt-10 placeholder-gray-400  shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-300 border-gray-200 border-2 pl-10 text-2xl bg-gray-100 rounded-2xl"
           type="text"
           value={food}
           onChange={(e) => setFood(e.target.value)}
