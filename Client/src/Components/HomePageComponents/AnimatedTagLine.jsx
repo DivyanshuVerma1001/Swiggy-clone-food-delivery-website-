@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 export default function TypingText({
   start = "Order Food ",
   phrases = ["Fresh","Fast","Flavourful"],
-  end = " With Swiggy",
+  end = " With Tastify",
   typingSpeed = 100,
   deletingSpeed = 100,
   pauseAfterTyping = 1400
