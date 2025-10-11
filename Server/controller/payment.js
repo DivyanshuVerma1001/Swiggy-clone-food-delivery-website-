@@ -65,17 +65,25 @@ const codPayment = async (req, res) => {
         throw new error("user not found")
     }
     // console.log(items, paymentMethod, selectedAddress, total)
+      const addressDetail = user.userAddresses.find(addr => addr._id.toString() === selectedAddress);
+        if (!addressDetail) {
+            throw new Error("Address not found");
+        }
     const newArray = items.map(({ name, price, imageId,quantity }) => ({
         name,
-        price,
+        price:price/100,
         imageId,
         quantity
     }));
+    
     const obj={
         foodItems:newArray,
         total:total,
-        address:selectedAddress,
+        address:addressDetail,
         methodOfPayment:paymentMethod
+    }
+    if (obj.methodOfPayment=="cod"){
+        obj.methodOfPayment="Cash on delivery"
     }
     user.orders.unshift(obj);
     await user.save();

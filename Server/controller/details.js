@@ -18,6 +18,29 @@ const getOrders= async (req,res)=>{
     res.status(500).send(error)
     }
 }
+
+
+const getUserInfo= async (req,res)=>{
+    try{
+    const {_id} = req.result;
+    if (!_id) throw new Error("user Id not found ");
+    console.log(_id)
+    const userData= await User.findById(_id);
+    if (!userData) throw new Error ("user deatil not found ");
+    const userInfo= {
+        name:userData.name,
+        number:userData.phone,
+        email:userData.email
+    }
+    res.status(200).json({
+        success:true,
+        userInfo
+    })
+    }catch(error){
+    console.log(error)
+    res.status(500).send(error)
+    }
+}
 const addAddress=async (req,res)=>{
     try{
         const {newAddress}= req.body;
@@ -61,4 +84,4 @@ const getAddress=async (req,res)=>{
     }
 }
 
-module.exports= {getOrders,addAddress,getAddress}
+module.exports= {getOrders,addAddress,getAddress,getUserInfo}

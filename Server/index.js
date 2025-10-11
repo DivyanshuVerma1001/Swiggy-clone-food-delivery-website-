@@ -17,10 +17,11 @@ app.use(express.json())
 app.use('/user',authRouter)
 app.use('/payment',paymentRouter)
 app.use('/detail',detailRouter)
+const port = process.env.PORT||3000
 DBconnect()
 .then(()=>{
     console.log("Database connected successfully")
-    app.listen(3000,()=>{
+    app.listen(port,()=>{
     console.log("listening at port number 3000")
     })
 })

@@ -2,6 +2,8 @@ import { imageGridCards } from "../../Utils/Food";
 import FoodCard from "./FoodCard";
 import { useRef, useEffect } from "react";
 
+import {CircleArrowRight,CircleArrowLeft} from "lucide-react"
+
 export default function FoodOption() {
   const scrollRef = useRef(null);
 
@@ -64,16 +66,17 @@ export default function FoodOption() {
       {/* Top-right buttons */}
       <div className="absolute top-1 right-1 flex gap-2 z-10">
         <button
-          onClick={scrollLeft}
-          className="bg-black/50 text-white px-3 py-2 rounded-full"
+          onClick={scrollRight}
+          // className="bg-black/50 text-white px-3 py-2 rounded-full"
         >
-          ◀
+          <CircleArrowLeft  className="h-10 w-auto text-slate-500"/>
         </button>
         <button
-          onClick={scrollRight}
-          className="bg-black/50 text-white px-3 py-2 rounded-full"
+          onClick={scrollLeft}
+          // className="bg-black/50 text-white px-3 py-2 rounded-full"
         >
-          ▶
+        <CircleArrowRight  className="h-10 w-auto text-slate-500"/>
+
         </button>
       </div>
 

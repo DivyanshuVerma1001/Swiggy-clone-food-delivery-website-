@@ -29,11 +29,14 @@ const Footer = () => {
           
           {/* Logo + Description */}
           <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-1">
             <img
-              src="https://res.cloudinary.com/dutdah0l9/image/upload/v1720058694/Swiggy_logo_bml6he.png"
+              src="/assets/whiteLogo.png"
               alt="Logo"
-              className="w-36 h-auto"
+              className="w-20 h-auto"
             />
+            <p className="text-5xl font-bold">Tastify</p>
+            </div>
             <p className="text-gray-400 text-sm">
               Fast and fresh food delivery from your favorite restaurants.
             </p>

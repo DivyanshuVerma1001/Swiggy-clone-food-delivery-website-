@@ -9,7 +9,7 @@ export default function Header(){
         <header className="min-h-screen bg-gradient-to-br from-[#ff5200] via-[rgb(247,84,2)] to-[#ff5200] font-serif">
             <div className="flex justify-between container mx-auto py-8">
                 <div className="flex items-center text-white text-4xl  font-sans font-bold ">
-                <img className="w-30 h-25" src="/assets/logo.png" alt="logo" />
+                <img className="w-30 h-25" draggable="false" src="/assets/logo.png" alt="logo" />
                 <h1>Tastify</h1>
                 </div>
                  <div className=" text-white  font-bold flex gap-15 items-center text-[20px] ">

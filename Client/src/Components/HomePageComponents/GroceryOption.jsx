@@ -1,6 +1,7 @@
 import { imageGridCards } from "../../Utils/Grocery";
 import GroceryCard from "./GroceryCard";
 import { useRef, useEffect } from "react";
+import {CircleArrowRight,CircleArrowLeft} from "lucide-react"
 
 export default function GroceryOption() {
   const scrollRef = useRef(null);
@@ -45,18 +46,19 @@ export default function GroceryOption() {
       <h1 className="text-2xl font-bold mb-5">Shop Groceries on Instamart</h1>
 
       {/* Top-right manual buttons */}
-      <div className="absolute top-1 right-1 flex gap-2 z-10">
-        <button
-          onClick={scrollLeft}
-          className="bg-black/50 text-white px-3 py-2 rounded-full"
-        >
-          ◀
-        </button>
+      <div className="absolute top-15 right-1 flex gap-2 z-10">
         <button
           onClick={scrollRight}
-          className="bg-black/50 text-white px-3 py-2 rounded-full"
+          // className="bg-black/50 text-white px-3 py-2 rounded-full"
+          
         >
-          ▶
+          <CircleArrowLeft  className="h-10 w-auto text-slate-500"/>
+        </button>
+        <button
+          onClick={scrollLeft}
+          // className="bg-black/50 text-white px-3 py-2 rounded-full"
+        >
+          <CircleArrowRight  className="h-10 w-auto text-slate-500"/>
         </button>
       </div>
 

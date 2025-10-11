@@ -1,40 +1,41 @@
 import React, { use, useEffect, useState } from "react";
-import {  User,  Mail,  Phone,  MapPin,  Edit2,  LogOut,  List,  Home,  Calendar,  CreditCard,  Utensils,  Gift,} from "lucide-react";
+import { User, Mail, Phone, MapPin, Edit2, LogOut, List, Home, Calendar, CreditCard, Utensils, Gift,IndianRupee } from "lucide-react";
 import axiosClient from "../axiosClient/axiosClient";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../Store/authSlice"
-export default function ProfilePage() { 
+export default function ProfilePage() {
 
-    const[addressTitle,setAddressTitle]=useState("")
-    const[addressDetail,setAddressDetail]=useState("")
-    const [addressList , setAddressList]=useState([])
-    const [addingAddress,setAddingAddress]= useState(false)
-    const [activeTab, setActiveTab] = useState("profile"); 
-    const [orderList,setOrderList]= useState([]);
+  const [addressTitle, setAddressTitle] = useState("")
+  const [addressDetail, setAddressDetail] = useState("")
+  const [addressList, setAddressList] = useState([])
+  const [addingAddress, setAddingAddress] = useState(false)
+  const [activeTab, setActiveTab] = useState("profile");
+  const [orderList, setOrderList] = useState([]);
   const dispatch = useDispatch();
   const onSubmit = async (data) => {
-      try {
-        dispatch(logoutUser());
-      } catch (err) {
-        console.error("Logout error:", err);
-      }
-    };
+    try {
+      dispatch(logoutUser());
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+  };
 
-    const {isAuthenticated,loading,user} = useSelector((state)=>state.auth)
-    const navigate= useNavigate()
-  useEffect(()=>{
-    if (!isAuthenticated){
+  const { isAuthenticated, loading, user } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!isAuthenticated) {
       navigate('/')
     }
-  },[])
-    useEffect(() => {
+  }, [])
+  useEffect(() => {
     const fetchOrders = async () => {
       try {
         const list = await axiosClient.get("/detail/orders", {
           params: { userId: user?.user?._id }, // safer: user id as query param
         });
         setOrderList(list.data.orders || []);
+        console.log("orderlist:",list.data)
       } catch (err) {
         console.error("Error fetching orders:", err);
       }
@@ -42,12 +43,12 @@ export default function ProfilePage() {
 
     if (user) fetchOrders();
   }, [user]);
-  
+
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
         const list = await axiosClient.get("/detail/getAddress");
-        console.log("list",list)
+        console.log("list", list)
         setAddressList(list.data.addressList || []);
       } catch (err) {
         console.error("Error fetching Address", err);
@@ -55,30 +56,49 @@ export default function ProfilePage() {
     };
 
     if (user) fetchAddresses();
-    console.log("address List",addressList)
+    console.log("address List", addressList)
   }, [user]);
 
-  const addAddress= async(data)=>{
-    try{
-      const address= await axiosClient.post('/detail/addAddress',data)
-    }catch(error){
-      console.log(error )
+  const addAddress = async (data) => {
+    try {
+      const address = await axiosClient.post('/detail/addAddress', data)
+    } catch (error) {
+      console.log(error)
     }
   }
-console.log("address list",addressList)
-  
-    const user1 = {
-    name: "Divyanshu Verma",
-    email: "divyanshu@example.com",
-    phone: "+91 9876543210",
+  // console.log("address list", addressList)
+  const [userInfo,setUserInfo]=useState({
+    name: "N/A",
+    email: "N/A",
+    phone: "N/A",
     address: "Delhi, India",
-    dob: "12 Jan 2003",
-    gender: "Male",
+    dob: "N/A",
+    gender: "N/A",
     payment: "UPI - Google Pay",
     cuisine: "North Indian, Chinese",
     points: 240,
     membership: "Gold Member",
-  };
+  })
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const list = await axiosClient.get("/detail/getUserInfo");
+        console.log("info list", list)
+        const detail=list.data.userInfo || {};
+        userInfo.name= detail.name;
+        userInfo.email=detail.email;
+        userInfo.phone= detail.number;
+        setUserInfo(userInfo)
+      } catch (err) {
+        console.error("Error fetching userDetail", err);
+      }
+    };
+
+    if (user) fetchUserInfo();
+   
+  }, [user]);
+
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -87,25 +107,22 @@ console.log("address list",addressList)
         <h2 className="text-xl font-bold mb-6">My Account</h2>
         <ul className="space-y-4 text-gray-700">
           <li
-            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${
-              activeTab === "profile" ? "text-orange-600 font-semibold" : ""
-            }`}
+            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${activeTab === "profile" ? "text-orange-600 font-semibold" : ""
+              }`}
             onClick={() => setActiveTab("profile")}
           >
             <User size={18} /> Profile
           </li>
           <li
-            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${
-              activeTab === "orders" ? "text-orange-600 font-semibold" : ""
-            }`}
+            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${activeTab === "orders" ? "text-orange-600 font-semibold" : ""
+              }`}
             onClick={() => setActiveTab("orders")}
           >
             <List size={18} /> Orders
           </li>
           <li
-            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${
-              activeTab === "address" ? "text-orange-600 font-semibold" : ""
-            }`}
+            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${activeTab === "address" ? "text-orange-600 font-semibold" : ""
+              }`}
             onClick={() => setActiveTab("address")}
           >
             <Home size={18} /> Addresses
@@ -133,35 +150,35 @@ console.log("address list",addressList)
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                 <div className="flex items-center gap-3">
                   <User className="text-gray-600" />
-                  <span className="font-medium">{user1.name}</span>
+                  <span className="font-medium">{userInfo.name}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="text-gray-600" />
-                  <span>{user1.email}</span>
+                  <span>{userInfo.email}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="text-gray-600" />
-                  <span>{user1.phone}</span>
+                  <span>{userInfo.phone}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <MapPin className="text-gray-600" />
-                  <span>{user1.address}</span>
+                  <span>{userInfo.address}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Calendar className="text-gray-600" />
-                  <span>{user1.dob}</span>
+                  <span>{userInfo.dob}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <User className="text-gray-600" />
-                  <span>{user1.gender}</span>
+                  <span>{userInfo.gender}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <CreditCard className="text-gray-600" />
-                  <span>{user1.payment}</span>
+                  <span>{userInfo.payment}</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Utensils className="text-gray-600" />
-                  <span>{user1.cuisine}</span>
+                  <span>{userInfo.cuisine}</span>
                 </div>
               </div>
             </div>
@@ -170,10 +187,10 @@ console.log("address list",addressList)
             <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl p-6 text-white mb-6">
               <h2 className="text-xl font-semibold">🍔 Foodie Rewards</h2>
               <p className="mt-2">
-                You have <b>{user1.points} points</b>
+                You have <b>{userInfo.points} points</b>
               </p>
               <p className="mt-1">
-                Status: <b>{user1.membership}</b>
+                Status: <b>{userInfo.membership}</b>
               </p>
               <button className="mt-3 bg-white text-orange-600 px-4 py-2 rounded-xl hover:bg-gray-200">
                 Redeem Rewards
@@ -199,109 +216,134 @@ console.log("address list",addressList)
             </div>
           </div>
         )}
+        {activeTab === "orders" && (
+          <div className="bg-gray-50 min-h-[70vh] p-6 rounded-3xl shadow-lg">
+            <h1 className="text-3xl font-extrabold text-gray-800 mb-6 border-b-2 border-orange-400 pb-2">
+              My Orders
+            </h1>
 
-{activeTab === "orders" && (
-  <div className="bg-white rounded-2xl shadow-md p-6">
-    <h1 className="text-2xl font-bold mb-4">My Orders</h1>
+            {orderList.length === 0 ? (
+              <div className="flex flex-col items-center justify-center text-center py-20">
+                <p className="text-gray-500 text-lg mb-4">You haven’t ordered anything yet 🍕</p>
+                <img src="/assets/empty-orders.svg" alt="No orders" className="w-48 h-48 opacity-70" />
+                <button className="mt-6 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition-all">
+                  Browse Menu
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {orderList.map((order) => (
+                  <div
+                    key={order._id}
+                    className="bg-white rounded-2xl shadow-md p-6 border-l-4 border-orange-400 hover:shadow-lg transition-all w-full"
+                  >
+                    <div className="flex justify-between items-center mb-4">
+                      <h2 className="font-semibold text-xl text-gray-800">
+                        Order #{order._id.slice(0, 10).toUpperCase()}
+                      </h2>
+                      <span className="text-sm text-gray-500">
+                        {new Date(order.date).toLocaleDateString()}
+                      </span>
+                    </div>
 
-    {orderList.length === 0 ? (
-      <p className="text-gray-600">You haven’t ordered anything yet 🍕</p>
-    ) : (
-      <div className="space-y-4">
-        {orderList.map((order) => (
-          <div key={order._id} className="border rounded-xl p-4 shadow-sm">
-            <h2 className="font-semibold text-lg mb-2">
-              Order ID: {order._id}
-            </h2>
-            <p className="text-gray-700">📍 Address: {order.address}</p>
-            <p className="text-gray-700">
-              💳 Payment: {order.methodOfPayment.toUpperCase()}
-            </p>
-            <p className="text-gray-700">💰 Total: ₹{order.total}</p>
+                    <div className="space-y-2 mb-4">
+                      <p className="text-gray-700 flex items-center gap-2">
+                        <MapPin className="w-5 h-5 text-orange-500" /> Address: {order.address}
+                      </p>
+                      <p className="text-gray-700 flex items-center gap-2">
+                        <CreditCard className="w-5 h-5 text-orange-500" /> Payment: {order.methodOfPayment.toUpperCase()}
+                      </p>
+                      <p className="text-gray-700 flex items-center gap-2 font-semibold">
+                        <IndianRupee className="w-5 h-5 text-orange-500" /> Total: ₹{order.total}
+                      </p>
+                    </div>
 
-            <h3 className="mt-3 font-medium">🍴 Items:</h3>
-            <ul className="list-disc list-inside">
-              {order.foodItems.map((item) => (
-                <li key={item._id}>
-                  {item.name} × {item.quantity} — ₹{item.price}
-                </li>
-              ))}
-            </ul>
+                    <h3 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
+                      <Utensils className="text-orange-500 w-5 h-5" /> Items:
+                    </h3>
+                    <ul className="list-disc list-inside text-gray-700 space-y-1">
+                      {order.foodItems.map((item) => (
+                        <li key={item._id} className="flex justify-between items-center">
+                          <span>{item.name} × {item.quantity}</span>
+                          <span className="font-semibold">₹{item.price}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        ))}
-      </div>
-    )}
-  </div>
-)}
+        )}
 
         {activeTab === "address" && (
-  <div className="bg-white rounded-2xl shadow-md p-6">
-    <h1 className="text-2xl font-bold mb-4">Saved Addresses</h1>
+          <div className="bg-white rounded-2xl shadow-md p-6">
+            <h1 className="text-2xl font-bold mb-4">Saved Addresses</h1>
 
-    {/* Show saved addresses */}
-    {addressList.length > 0 ? (
-      <div className="space-y-4">
-        {addressList.map((address) => (
-          <div
-            key={address._id}
-            className="border rounded-xl p-4 shadow-sm bg-gray-50"
-          >
-            <h2 className="font-semibold text-lg">{address.title}</h2>
-            <p className="text-gray-700">{address.address}</p>
+            {/* Show saved addresses */}
+            {addressList.length > 0 ? (
+              <div className="space-y-4">
+                {addressList.map((address) => (
+                  <div
+                    key={address._id}
+                    className="border rounded-xl p-4 shadow-sm bg-gray-50"
+                  >
+                    <h2 className="font-semibold text-lg">{address.title}</h2>
+                    <p className="text-gray-700">{address.address}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600">No addresses saved yet 🏠</p>
+            )}
+
+            {/* Add Address Form */}
+            {addingAddress && (
+              <div className="mt-4 space-y-2">
+                <input
+                  type="text"
+                  placeholder="Title (e.g. Home, Office)"
+                  value={addressTitle}
+                  onChange={(e) => setAddressTitle(e.target.value)}
+                  className="w-full border rounded-lg p-2"
+                />
+                <input
+                  type="text"
+                  placeholder="Address details"
+                  value={addressDetail}
+                  onChange={(e) => stAddressDetail(e.target.value)}
+                  className="w-full border rounded-lg p-2"
+                />
+                <button
+                  onClick={async () => {
+                    await addAddress({
+                      newAddress: { title: addressTitle, address: addressDetail },
+                    });
+                    setAddressTitle("");
+                    setAddressDetail("");
+                    setAddingAddress(false);
+                    // refresh address list
+                    const list = await axiosClient.get("/detail/getAddress");
+                    setAddressList(list.data.addressList || []);
+                  }}
+                  className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+                >
+                  Save Address
+                </button>
+              </div>
+            )}
+
+            {/* Button to open form */}
+            {!addingAddress && (
+              <button
+                onClick={() => setAddingAddress(true)}
+                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+              >
+                + Add New Address
+              </button>
+            )}
           </div>
-        ))}
-      </div>
-    ) : (
-      <p className="text-gray-600">No addresses saved yet 🏠</p>
-    )}
-
-    {/* Add Address Form */}
-    {addingAddress && (
-      <div className="mt-4 space-y-2">
-        <input
-          type="text"
-          placeholder="Title (e.g. Home, Office)"
-          value={addressTitle}
-          onChange={(e) => setAddressTitle(e.target.value)}
-          className="w-full border rounded-lg p-2"
-        />
-        <input
-          type="text"
-          placeholder="Address details"
-          value={addressDetail}
-          onChange={(e) => setAddressDetail(e.target.value)}
-          className="w-full border rounded-lg p-2"
-        />
-        <button
-          onClick={async () => {
-            await addAddress({
-              newAddress: { title: addressTitle, address: addressDetail },
-            });
-            setAddressTitle("");
-            setAddressDetail("");
-            setAddingAddress(false);
-            // refresh address list
-            const list = await axiosClient.get("/detail/getAddress");
-            setAddressList(list.data.addressList || []);
-          }}
-          className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
-        >
-          Save Address
-        </button>
-      </div>
-    )}
-
-    {/* Button to open form */}
-    {!addingAddress && (
-      <button
-        onClick={() => setAddingAddress(true)}
-        className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-      >
-        + Add New Address
-      </button>
-    )}
-  </div>
-)}
+        )}
 
       </div>
     </div>

@@ -89,7 +89,7 @@ export default function RestaurantMenu() {
             step="100"
             value={priceRange[1]}
             onChange={(e) => setPriceRange([100, Number(e.target.value)])}
-            className="w-full"
+            className="w-full accent-orange-600"
           />
           <div className="flex justify-between text-sm">
             <span>₹100</span>

@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { IncrementItems, DecrementItems, ClearCart } from "../Store/CardSlicer";
@@ -8,34 +8,43 @@ import SuccessComponent from "../Components/CheckoutPageComponents/OrderSuccessC
 export default function CheckoutPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [addressTitle, setAddressTitle] = useState("")
+  const [addressDetail, setAddressDetail] = useState("")
+  const [addingAddress, setAddingAddress] = useState(false)
   const { isAuthenticated, user } = useSelector((state) => state.auth);
-  useEffect(()=>{
-    if (!isAuthenticated){
+  useEffect(() => {
+    if (!isAuthenticated) {
       navigate('/login')
     }
-  },[])
-  const[ dummyAddresses,setDummyAddresses]=useState([])
+  }, [])
+  const [dummyAddresses, setDummyAddresses] = useState([])
   const items = useSelector((state) => state.cartslice.items);
-  useEffect(()=>{
-    const fetchAddress=async ()=>{
-    try{
-      const addressList= await axiosClient.get('/detail/getAddress')
-      setDummyAddresses(addressList.data.addressList || [])
-    }catch(error){
+  const addAddress = async (data) => {
+    try {
+      const address = await axiosClient.post('/detail/addAddress', data)
+    } catch (error) {
       console.log(error)
     }
   }
-  fetchAddress()
-  },[user])
-console.log("address are :" ,dummyAddresses)
-const [selectedAddress, setSelectedAddress] = useState(null);
+  useEffect(() => {
+    const fetchAddress = async () => {
+      try {
+        const addressList = await axiosClient.get('/detail/getAddress')
+        setDummyAddresses(addressList.data.addressList || [])
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchAddress()
+  }, [user])
+  console.log("address are :", dummyAddresses)
+  const [selectedAddress, setSelectedAddress] = useState(null);
 
-useEffect(() => {
-  if (dummyAddresses.length > 0) {
-    setSelectedAddress(dummyAddresses[0]._id);
-  }
-}, [dummyAddresses]);
+  useEffect(() => {
+    if (dummyAddresses.length > 0) {
+      setSelectedAddress(dummyAddresses[0]._id);
+    }
+  }, [dummyAddresses]);
   const [paymentMethod, setPaymentMethod] = useState("cod");
 
   // Success state
@@ -53,7 +62,7 @@ useEffect(() => {
 
   const subtotal = items.reduce((acc, i) => acc + (i.price / 100) * i.quantity, 0);
   let deliveryFee = 49;
-  if (items.length==0) deliveryFee=0;
+  if (items.length == 0) deliveryFee = 0;
   const taxes = Math.round(subtotal * 0.05);
   const total = subtotal + deliveryFee + taxes;
 
@@ -180,33 +189,83 @@ useEffect(() => {
           <div>
             <p className="font-semibold text-gray-800 mb-2">Delivery Address</p>
             <div className="flex flex-col overflow-y-auto max-h-45">
-            {dummyAddresses.map((addr) => (
-              <div
-                key={addr.id}
-                onClick={() => setSelectedAddress(addr._id)}
-                className={`border p-3 rounded-xl mb-2 cursor-pointer ${
-                  selectedAddress === addr._id
+              {dummyAddresses.map((addr) => (
+                <div
+                  key={addr.id}
+                  onClick={() => setSelectedAddress(addr._id)}
+                  className={`border p-3 rounded-xl mb-2 cursor-pointer ${selectedAddress === addr._id
                     ? "border-[#ff5200] bg-orange-50"
                     : "border-gray-300"
-                }`}
-              >
-                <p className="font-medium text-gray-700">{addr.title}</p>
-                <p className="text-gray-600 text-sm">{addr.address}</p>
-              </div>
-            ))}
+                    }`}
+                >
+                  <p className="font-medium text-gray-700">{addr.title}</p>
+                  <p className="text-gray-600 text-sm">{addr.address}</p>
+                </div>
+              ))}
+
+
+
+
             </div>
+            {/* Button to open form */}
+            {!addingAddress && (
+              <div className=" flex justify-end">
+                <button
+                  onClick={() => setAddingAddress(true)}
+                  className="mt-4 bg-green-500 text-white px-2 py-2 font-medium text-sm rounded-lg hover:bg-green-600"
+                >
+                  Add Address
+                </button>
+              </div>
+            )}
           </div>
+          {/* Add Address Form */}
+          {addingAddress && (
+            <div className="mt-4 space-y-2">
+              <input
+                type="text"
+                placeholder="Title (e.g. Home, Office)"
+                value={addressTitle}
+                onChange={(e) => setAddressTitle(e.target.value)}
+                className="w-full border rounded-lg p-2"
+              />
+              <input
+                type="text"
+                placeholder="Address details"
+                value={addressDetail}
+                onChange={(e) => setAddressDetail(e.target.value)}
+                className="w-full border rounded-lg p-2"
+              />
+              <div className="flex justify-end">
+                <button
+                  onClick={async () => {
+                    await addAddress({
+                      newAddress: { title: addressTitle, address: addressDetail },
+                    });
+                    setAddressTitle("");
+                    setAddressDetail("");
+                    setAddingAddress(false);
+                    // refresh address list
+                    const list = await axiosClient.get("/detail/getAddress");
+                    setDummyAddresses(list.data.addressList || []);
+                  }}
+                  className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+                >
+                  Save Address
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Payment */}
           <div>
             <p className="font-semibold text-gray-800 mb-2">Payment Method</p>
             <div className="flex gap-3">
               <label
-                className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${
-                  paymentMethod === "cod"
-                    ? "border-[#ff5200] bg-orange-50"
-                    : "border-gray-300"
-                }`}
+                className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${paymentMethod === "cod"
+                  ? "border-[#ff5200] bg-orange-50"
+                  : "border-gray-300"
+                  }`}
               >
                 <input
                   type="radio"
@@ -221,11 +280,10 @@ useEffect(() => {
                 </span>
               </label>
               <label
-                className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${
-                  paymentMethod === "online"
-                    ? "border-[#ff5200] bg-orange-50"
-                    : "border-gray-300"
-                }`}
+                className={`flex-1 flex items-center gap-2 p-2 border rounded-xl cursor-pointer ${paymentMethod === "online"
+                  ? "border-[#ff5200] bg-orange-50"
+                  : "border-gray-300"
+                  }`}
               >
                 <input
                   type="radio"
@@ -264,30 +322,47 @@ useEffect(() => {
             <button
               onClick={async () => {
                 if (items.length === 0) {
-      alert("Your cart is empty. Please add items before placing an order.");
-      return;
-    }
+                  alert("Your cart is empty. Please add items before placing an order.");
+                  return;
+                }
+                if (selectedAddress == null) {
+                  setAddingAddress(true);
+                  return;
+                }
                 if (paymentMethod === "cod") {
-                  const res = await codPayment({
-                    items,
-                    selectedAddress,
-                    paymentMethod,
-                    total,
-                    userId: user.user._id,
-                  });
-                  dispatch(ClearCart());
-                  setOrderDetails({
-                    items,
-                    address: dummyAddresses.find((a) => a._id === selectedAddress),
-                    paymentMethod,
-                    total,
-                    orderId: res?.data?.orderId || "N/A",
-                  });
-                  console.log("order details",orderDetails);
-                  setOrderSuccess(true);
+                  try {
+                    const res = await codPayment({
+                      items,
+                      selectedAddress,
+                      paymentMethod,
+                      total,
+                      userId: user.user._id,
+                    });
+
+                    if (res.data?.success) { // check server response
+                      dispatch(ClearCart());
+                      setOrderDetails({
+                        items,
+                        address: dummyAddresses.find((a) => a._id === selectedAddress),
+                        paymentMethod,
+                        total,
+                        orderId: res.data?.orderId || "N/A",
+                      });
+                      setOrderSuccess(true);
+                    } else {
+                      alert("Payment failed. Please try again.");
+                      setOrderSuccess(false);
+                    }
+
+                  } catch (err) {
+                    console.log("Error occurred in COD payment:", err);
+                    alert("Something went wrong. Please try again.");
+                    setOrderSuccess(false);
+                  }
                 } else {
                   await onlinePayment(total);
                 }
+
               }}
               className="w-full mt-4 bg-[#ff5200] text-white py-3 rounded-xl font-bold shadow-md hover:bg-orange-600 transition"
             >

@@ -54,7 +54,7 @@ export default function TypingText({
       {end}
     </h1>
     
-            {/* <style jsx>{`
+            <style jsx>{`
                 @keyframes blink {
                 0%   { opacity: 1; }
                 50%  { opacity: 0; }
@@ -65,7 +65,7 @@ export default function TypingText({
                 display: inline-block;
                 animation: blink 1s step-start infinite;
                 }
-                `}</style> */}
+                `}</style>
   
   </>
   );
