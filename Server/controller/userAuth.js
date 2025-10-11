@@ -215,7 +215,8 @@ const login = async (req, res) => {
             throw new Error("Invaild Credential not matched!")
         }
       const token = jwt.sign({_id:userData._id, emailId:userData.email},process.env.JWT_KEY,{expiresIn:3600});
-        res.cookie('token',token,{maxAge:60*60*1000,  secure: true    });
+        res.cookie('token',token,{maxAge:60*60*1000,  secure: true , httpOnly: true,           // secure: JS can't access it
+  sameSite: 'none',           });
       const reply={
             name:userData.name,
             email:userData.email,
