@@ -8,10 +8,22 @@ const cookieParser = require("cookie-parser");
 const detailRouter = require("./routes/detailRoute")
 
 const app= express();
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://tastify.divyanshu-verma.me'
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: function(origin, callback){
+    if(!origin || allowedOrigins.includes(origin)){
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
+
 app.use(cookieParser()); 
 app.use(express.json())
 app.use('/user',authRouter)

@@ -62,7 +62,7 @@ export default function FoodOption() {
   };
 
   return (
-    <div className="w-[80%] container mx-auto mt-20 relative mb-20 pt-20">
+    <div id="foodOption" className="w-[80%] container mx-auto mt-20 relative mb-20 pt-20">
       {/* Top-right buttons */}
       <div className="absolute top-1 right-1 flex gap-2 z-10">
         <button

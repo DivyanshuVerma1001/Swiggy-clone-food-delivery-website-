@@ -8,7 +8,7 @@ export default function Home(){
     return(
         <>
         <Header></Header>
-        <FoodOption></FoodOption>
+        <FoodOption ></FoodOption>
         <GroceryOption></GroceryOption>
         <DineOption></DineOption>
         <Footer></Footer>

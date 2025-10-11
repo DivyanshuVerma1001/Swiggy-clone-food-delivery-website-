@@ -13,8 +13,8 @@ export default function Header(){
                 <h1>Tastify</h1>
                 </div>
                  <div className=" text-white  font-bold flex gap-15 items-center text-[20px] ">
-                    <a target="_blank" href="https://www.swiggy.com/corporate/">Best Deals</a>  
-                    <a href="https://partner.swiggy.com/login#/swiggy">Popular Picks </a>
+                    <a  onClick={()=>document.getElementById("foodOption").scrollIntoView({behavior:"smooth"})}>Best Deals</a>  
+                    <a  onClick={()=>document.getElementById("groceryOption").scrollIntoView({behavior:"smooth"})}>Popular Picks </a>
                     <a href="https://divyanshu-verma.me" className="border border-white py-3 px-4 rounded-2xl"target="_blank">Contact us</a>
                     {
                         isAuthenticated?
