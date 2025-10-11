@@ -10,8 +10,7 @@ const ForgotPassword = () => {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosClient.post(
-        "http://localhost:3000/user/forgotPassword",
+      const res = await axiosClient.post("/user/forgotPassword",
         { email }
       );
       toast.success(res.data.message);
