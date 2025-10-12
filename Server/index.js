@@ -10,8 +10,7 @@ const detailRouter = require("./routes/detailRoute")
 const app= express();
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://tastify.divyanshu-verma.me',
-  'https://swiggy.divyanshu-verma.me'
+  'https://tastify.divyanshu-verma.me'
 ];
 
 app.use(cors({

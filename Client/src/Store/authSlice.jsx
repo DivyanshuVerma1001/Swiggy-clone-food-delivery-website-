@@ -225,9 +225,9 @@ const authSlice = createSlice({
             })
             .addCase(checkAuth.fulfilled,(state,action)=>{
             state.loading= false;
-            if(action.payload && action.payload._id){  // or any field you expect
+            if(action.payload && action.payload.user && action.payload.user._id){  // Check for nested user object
             state.isAuthenticated = true;
-            state.user = action.payload;
+            state.user = action.payload.user;  // Access the nested user object
             } else {
             state.isAuthenticated = false;
             state.user = null;

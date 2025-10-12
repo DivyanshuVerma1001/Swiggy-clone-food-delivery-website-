@@ -89,7 +89,7 @@ const googleRegister = async (req, res) => {
     }
     res.status(201).json({
       user: reply,
-      message: "login successfully"
+      message: "registered successfully"
     })
   } catch (err) {
     console.error("Google OAuth Error:", err.response?.data || err.message);
