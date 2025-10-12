@@ -36,9 +36,18 @@ function Signup() {
 
   const onSubmit = async (data) => {
     try {
+      console.log("Submitting registration data:", data);
       const reply = await dispatch(registerUser(data));
-      if (reply.payload.success) {
+      console.log("Registration response:", reply);
+      
+      // Check if the registration was successful
+      if (reply.type === 'auth/register/fulfilled') {
+        console.log("Registration successful, navigating to OTP verification");
+        // Registration successful, navigate to OTP verification
         navigate(`/otpverification/${data.email}/${data.phone}`);
+      } else if (reply.type === 'auth/register/rejected') {
+        // Registration failed, error is already handled by Redux slice
+        console.error("Registration failed:", reply.payload);
       }
     } catch (err) {
       console.error("Error in registerUser:", err);

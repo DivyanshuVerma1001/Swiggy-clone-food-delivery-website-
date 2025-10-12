@@ -97,7 +97,7 @@ export default function ProfilePage() {
 
     if (user) fetchUserInfo();
    
-  }, [user]);
+  }, [user,userInfo]);
 
 
   return (
@@ -311,7 +311,7 @@ export default function ProfilePage() {
                   type="text"
                   placeholder="Address details"
                   value={addressDetail}
-                  onChange={(e) => stAddressDetail(e.target.value)}
+                  onChange={(e) => setAddressDetail(e.target.value)}
                   className="w-full border rounded-lg p-2"
                 />
                 <button

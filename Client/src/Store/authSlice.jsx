@@ -95,7 +95,7 @@ export const checkAuth= createAsyncThunk(
     }
 )
 export const verifyOtp= createAsyncThunk(
-    'auth/check',
+    'auth/verifyOtp',
     async (_,{rejectWithValue})=>{
         try{
             const {data}=await axiosClient.get('user/verifyOtp');
@@ -137,7 +137,9 @@ const authSlice = createSlice({
             })
             .addCase(registerUser.fulfilled,(state,action)=>{
                 state.loading= false;
-                
+                state.error= null;
+                // Registration successful, but user is not authenticated yet
+                // They need to verify OTP first
             })
             .addCase(registerUser.rejected,(state,action)=>{
                 state.loading= false;
@@ -227,7 +229,7 @@ const authSlice = createSlice({
             state.loading= false;
             if(action.payload && action.payload.user && action.payload.user._id){  // Check for nested user object
             state.isAuthenticated = true;
-            state.user = action.payload.user;  // Access the nested user object
+            state.user = action.payload;  // Access the nested user object
             } else {
             state.isAuthenticated = false;
             state.user = null;
