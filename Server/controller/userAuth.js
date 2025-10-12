@@ -133,11 +133,11 @@ const verifyOtp = async (req, res) => {
 
     await userData.save();
     const token = jwt.sign({ _id: userData._id, emailId: userData.email }, process.env.JWT_KEY, { expiresIn: 3600 });
-    res.cookie('token', token, {
+       res.cookie('token', token, {
       maxAge: 60 * 60 * 1000,        // 1 hour
       httpOnly: true,                 // prevent JS access
-      secure: process.env.NODE_ENV === 'production',  // Only secure in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',  // Different sameSite for dev/prod
+      secure: true,                   // required for 'none'
+      sameSite: 'none',               // allow cross-domain
     });
     const reply = {
       name: userData.name,
@@ -220,9 +220,11 @@ const login = async (req, res) => {
       throw new Error("Invaild Credential not matched!")
     }
     const token = jwt.sign({ _id: userData._id, emailId: userData.email }, process.env.JWT_KEY, { expiresIn: 3600 });
-    res.cookie('token', token, {
-      maxAge: 60 * 60 * 1000, secure: process.env.NODE_ENV === 'production', httpOnly: true,           
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+     res.cookie('token', token, {
+      maxAge: 60 * 60 * 1000,        // 1 hour
+      httpOnly: true,                 // prevent JS access
+      secure: true,                   // required for 'none'
+      sameSite: 'none',               // allow cross-domain
     });
     const reply = {
       name: userData.name,

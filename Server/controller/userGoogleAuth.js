@@ -23,8 +23,10 @@ const googleLogin = async (req, res) => {
     }
     const token = jwt.sign({ _id: userData._id, emailId: userData.email }, process.env.JWT_KEY, { expiresIn: 3600 });
     res.cookie('token', token, {
-      maxAge: 60 * 60 * 1000, secure: process.env.NODE_ENV === 'production', httpOnly: true,           
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 60 * 60 * 1000,        // 1 hour
+      httpOnly: true,                 // prevent JS access
+      secure: true,                   // required for 'none'
+      sameSite: 'none',               // allow cross-domain
     });
 
     const reply = {
@@ -73,11 +75,13 @@ const googleRegister = async (req, res) => {
     })
     console.log("data entered in database", userData);
     const token = jwt.sign({ _id: userData._id, emailId: userData.email }, process.env.JWT_KEY, { expiresIn: 3600 });
- 
-       res.cookie('token', token, {
-      maxAge: 60 * 60 * 1000, secure: process.env.NODE_ENV === 'production', httpOnly: true,           
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    res.cookie('token', token, {
+      maxAge: 60 * 60 * 1000,        // 1 hour
+      httpOnly: true,                 // prevent JS access
+      secure: true,                   // required for 'none'
+      sameSite: 'none',               // allow cross-domain
     });
+      
     const reply = {
       name: userData.name,
       email: userData.email,
