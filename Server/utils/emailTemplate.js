@@ -7,7 +7,7 @@ function generateEmailTemplate(verificationCode) {
         🍴 Verify Your Email
       </h2>
       <p style="font-size: 16px; color: #333; text-align: center;">
-        Welcome to <span style="color:#e53935; font-weight:bold;">FoodExpress</span>!
+        Welcome to <span style="color:#e53935; font-weight:bold;">Tastify</span>!
       </p>
 
       <!-- Verification Code Box -->
@@ -35,7 +35,7 @@ function generateEmailTemplate(verificationCode) {
 
       <!-- Footer -->
       <footer style="margin-top: 25px; text-align: center; font-size: 14px; color: #666;">
-        <p style="margin: 0;">Thank you for choosing <span style="color:#43a047; font-weight:bold;">FoodExpress</span> 🍕</p>
+        <p style="margin: 0;">Thank you for choosing <span style="color:#43a047; font-weight:bold;">Tastify</span> 🍕</p>
         <p style="font-size: 12px; color: #999; margin-top: 8px;">
           This is an automated message. Please do not reply.
         </p>
