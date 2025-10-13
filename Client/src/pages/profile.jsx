@@ -97,7 +97,7 @@ export default function ProfilePage() {
 
     if (user) fetchUserInfo();
    
-  }, [user,userInfo]);
+  }, [user]);
 
 
   return (
@@ -107,27 +107,27 @@ export default function ProfilePage() {
         <h2 className="text-xl font-bold mb-6">My Account</h2>
         <ul className="space-y-4 text-gray-700">
           <li
-            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${activeTab === "profile" ? "text-orange-600 font-semibold" : ""
+            className={`flex items-center gap-3 text-[18px] hover:bg-slate-100 p-2 cursor-pointer hover:text-orange-600 ${activeTab === "profile" ? "text-orange-600 font-semibold  bg-orange-50" : ""
               }`}
             onClick={() => setActiveTab("profile")}
           >
             <User size={18} /> Profile
           </li>
           <li
-            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${activeTab === "orders" ? "text-orange-600 font-semibold" : ""
+            className={`flex items-center gap-3 text-[18px] hover:bg-slate-100 p-2 cursor-pointer hover:text-orange-600 ${activeTab === "orders" ? "text-orange-600 font-semibold bg-orange-50" : ""
               }`}
             onClick={() => setActiveTab("orders")}
           >
             <List size={18} /> Orders
           </li>
           <li
-            className={`flex items-center gap-3 cursor-pointer hover:text-orange-600 ${activeTab === "address" ? "text-orange-600 font-semibold" : ""
+            className={`flex items-center gap-3 text-[18px] hover:bg-slate-100 p-2 cursor-pointer hover:text-orange-600 ${activeTab === "address" ? "text-orange-600 font-semibold  bg-orange-50" : ""
               }`}
             onClick={() => setActiveTab("address")}
           >
             <Home size={18} /> Addresses
           </li>
-          <li onClick={onSubmit} className="flex items-center gap-3 cursor-pointer hover:text-red-600 mt-10">
+          <li onClick={onSubmit} className="flex items-center text-[18px] hover:bg-red-100 p-2 gap-3 cursor-pointer hover:text-red-600 mt-10">
             <LogOut size={18} /> Logout
           </li>
         </ul>

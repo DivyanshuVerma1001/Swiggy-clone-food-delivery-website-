@@ -151,7 +151,7 @@ const verifyOtp = async (req, res) => {
 
   }
   catch (err) {
-    res.status(401).send("Error: " + err);
+    res.status(401).json({"Error: " :err});
   }
 
 }
@@ -165,7 +165,7 @@ async function sendVerificationCode(verificationMethod, verificationCode, name, 
     if (verificationMethod === "email") {
       const message = generateEmailTemplate(verificationCode);
       // console.log(message)
-      sendEmail({ email, subject: "Your Verification Code", message });
+      await sendEmail({ email, subject: "Your Verification Code", message });
       res.status(200).json({
         success: true,
         message: `Verification email successfully sent to ${name}`,
@@ -269,7 +269,8 @@ const forgotPassword = async (req, res) => {
     accountVerified: true,
   });
   const x = await User.find();
-  console.log(x)
+  console.log("user mila forgot password ke liye :",user)
+  console.log("all users ",x)
   console.log(req.body.email)
   if (!user) {
     throw new Error("User not found.");
