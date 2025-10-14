@@ -2,20 +2,25 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import axiosClient from "../axiosClient/axiosClient"
 import { toast } from "react-toastify";
 
-export const registerUser= createAsyncThunk(
-    'auth/register',
-    async (userData,{rejectWithValue})=>{
-        try{
-            const response = await axiosClient.post("/user/register",userData);
-            console.log("register",response)
-            return  response.data;
-        }
-        catch(error){
-            console.log("error occur ",error)
-            return rejectWithValue(error.response?.data?.message || error.message)
-        }
+export const registerUser = createAsyncThunk(
+  'auth/register',
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axiosClient.post("/user/register", userData);
+      console.log("register success:", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("register error:", error);
+      // Agar backend JSON me { error: "User already exists" } bhejta hai, use yaha properly rejectWithValue me daalna
+      const backendMessage =
+        error.response?.data?.error || // preferred: backend sends { error: "..." }
+        error.response?.data?.message || // fallback: { message: "..." }
+        error.message; // last fallback
+
+      return rejectWithValue(backendMessage);
     }
-)
+  }
+);
 
 export const otpVerification= createAsyncThunk(
     'auth/otpVerification',
