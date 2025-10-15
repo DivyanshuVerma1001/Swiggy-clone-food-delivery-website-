@@ -3,7 +3,7 @@ import './App.css'
 import Restaurant from './Components/RestaurantPageComponents/Restaurant'
 import Home from './pages/Home'
 import { ToastContainer } from "react-toastify";
-import {BrowserRouter,Routes, Route, Navigate} from "react-router"
+import {Routes, Route, Navigate} from "react-router-dom"
 import RestaurantMenu from './Components/MenuPageComponents/RestaurantMenu'
 import SearchFood from './pages/SearchFood'
 import SecondaryHome from './pages/SecondaryHome'
@@ -34,9 +34,7 @@ function App() {
   }
 
   return (
-    <>
-      
-      <BrowserRouter>
+  	<>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
           <Route path='/login' element ={isAuthenticated?<Navigate to="/"/>:<Login></Login>}></Route>
@@ -58,7 +56,6 @@ function App() {
           
         </Routes>
          <ToastContainer theme="colored"/>   
-      </BrowserRouter>
     
        
     </>
