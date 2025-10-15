@@ -287,7 +287,7 @@ const forgotPassword = async (req, res) => {
   const message = `Your Reset Password Token is:- \n\n ${resetPasswordUrl} \n\n If you have not requested this email then please ignore it.`;
 
   try {
-    sendEmail({
+    sendEmailR({
       email: user.email,
       subject: "MERN AUTHENTICATION APP RESET PASSWORD",
       message,
