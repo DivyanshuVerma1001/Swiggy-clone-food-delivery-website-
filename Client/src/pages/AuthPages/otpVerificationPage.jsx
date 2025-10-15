@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useParams } from "react-router";
 import { otpVerification } from '../../Store/authSlice'
-
+import { toast } from "react-toastify";
 const OtpVerification = () => {
   const { isAuthenticated, loading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

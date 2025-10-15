@@ -41,6 +41,7 @@ function Signup() {
   const onSubmit = async (data) => {
     try {
       const reply = await dispatch(registerUser(data));
+      console.log("signup page par jo respnse aya hai :" ,reply)
       if (reply.type === "auth/register/fulfilled") {
         navigate(`/otpverification/${data.email}/${data.phone}`);
       } else if (reply.type === "auth/register/rejected") {

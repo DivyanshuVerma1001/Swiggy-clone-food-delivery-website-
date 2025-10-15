@@ -165,9 +165,10 @@ async function sendVerificationCode(verificationMethod, verificationCode, name, 
     if (verificationMethod === "email") {
       const message = generateEmailTemplate(verificationCode);
       // console.log(message)
-      await sendEmail({ email, subject: "Your Verification Code", message });
+      console.log("resend ne email bejna start kar diya ")
+      // await sendEmail({ email, subject: "Your Verification Code", message });
       await sendEmailR({ email, subject: "Your Verification Code", message });
-
+      console.log("resend ne email bej di ")
       res.status(200).json({
         success: true,
         message: `Verification email successfully sent to ${name}`,
