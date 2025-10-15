@@ -44,6 +44,7 @@ export const loginUser= createAsyncThunk(
         }
         catch(error){
             // Only send back safe, serializable info
+            console.log("error in logout :" ,error)
             return rejectWithValue(
                 error.response?.data?.message || error.message
             )

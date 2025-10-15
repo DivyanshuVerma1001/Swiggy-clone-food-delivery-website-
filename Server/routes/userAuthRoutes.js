@@ -1,5 +1,5 @@
 const express= require('express')
-const {register,verifyOtp,login ,forgotPassword,resetPassword}= require('../controller/userAuth')
+const {register,verifyOtp,login ,forgotPassword,resetPassword, logout}= require('../controller/userAuth')
 const userMiddleware= require('../middleware/userMiddleware');
 const {googleLogin, googleRegister} = require('../controller/userGoogleAuth');
 const authRouter= express.Router()
@@ -7,6 +7,7 @@ const authRouter= express.Router()
 authRouter.post('/register',register);
 authRouter.post('/otpverification',verifyOtp)
 authRouter.post('/login',login)
+authRouter.post('/logout',logout)
 authRouter.post('/forgotPassword',forgotPassword)
 authRouter.post('/resetPassword/:token',resetPassword)
 authRouter.get('/googleLogin',googleLogin)
