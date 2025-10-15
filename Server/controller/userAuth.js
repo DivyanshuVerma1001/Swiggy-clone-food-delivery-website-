@@ -9,7 +9,7 @@ const generateResetPasswordToken = require('../utils/generateResetToken')
 const twilio = require("twilio");
 
 const sendEmail = require('../utils/sendEmail')
-
+const sendEmailR= require('../utils/resendEmail.js')
 const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 
 const register = async (req, res) => {
@@ -166,6 +166,8 @@ async function sendVerificationCode(verificationMethod, verificationCode, name, 
       const message = generateEmailTemplate(verificationCode);
       // console.log(message)
       await sendEmail({ email, subject: "Your Verification Code", message });
+      await sendEmailR({ email, subject: "Your Verification Code", message });
+
       res.status(200).json({
         success: true,
         message: `Verification email successfully sent to ${name}`,
