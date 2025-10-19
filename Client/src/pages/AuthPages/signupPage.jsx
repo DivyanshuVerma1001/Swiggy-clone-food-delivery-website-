@@ -60,15 +60,24 @@ function Signup() {
       <div className="flex w-full max-w-4xl bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden animate-fadeIn">
         
         {/* Left side illustration */}
-        <div className="hidden md:flex w-1/2 bg-[url('/food-bg.jpg')] bg-cover bg-center relative">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
-          <div className="absolute bottom-6 left-6 text-white">
-            <h2 className="text-2xl font-bold drop-shadow-lg">Fresh Meals, Fast Delivery 🍴</h2>
-            <p className="mt-1 text-xs opacity-90">
-              Order your favorites & track them in real time!
-            </p>
-          </div>
-        </div>
+<div className="hidden md:flex w-1/2 relative">
+  <img
+    src="/assets/registrationPgFood.jpg"
+    alt="Delicious food"
+    className="absolute top-0 left-0 w-full h-full object-cover"
+  />
+  {/* Gradient overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+  {/* Text */}
+  <div className="absolute bottom-6 left-6 text-white">
+    <h2 className="text-2xl font-bold drop-shadow-lg">
+      Fresh Meals, Fast Delivery 🍴
+    </h2>
+    <p className="mt-1 text-xs opacity-90">
+      Order your favorites & track them in real time!
+    </p>
+  </div>
+</div>
 
         {/* Right side form */}
         <div className="w-full md:w-1/2 p-6 flex flex-col justify-center">
