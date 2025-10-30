@@ -41,7 +41,7 @@ export default function MenuCard({
       <div className="w-full">
         <div className="flex justify-between">
           <p className="font-bold text-2xl mb-3">{menuItems.title}</p>
-          <button onClick={() => setIsOpen(!isOpen)}>
+          <button className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
             <img
               className={`h-9 mr-10 transform transition-transform duration-300 ${
                 isOpen ? "rotate-180" : "rotate-0"
@@ -51,7 +51,9 @@ export default function MenuCard({
             />
           </button>
         </div>
+        <div className="pl-2 pr-10">
         <div className="h-3 w-full bg-[#02060C0D] mb-5"></div>
+        </div>
       </div>
     );
   }
@@ -108,7 +110,7 @@ export default function MenuCard({
       {/* Section Header */}
       <div className="flex justify-between">
         <p className="font-bold text-2xl mb-7">{menuItems.title}</p>
-        <button onClick={() => setIsOpen(!isOpen)}>
+        <button className="cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
           <img
             className={`h-9 mr-10 transform transition-transform duration-300 ${
               isOpen ? "rotate-180" : "rotate-0"

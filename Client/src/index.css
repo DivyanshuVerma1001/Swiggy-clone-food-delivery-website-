@@ -6,3 +6,20 @@ html, body {
 input, textarea, [contenteditable="true"] {
   cursor: text;          /* sirf form fields me text cursor */
 }
+
+
+
+/* ✅ Custom font setup */
+:root {
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* Optional helper classes */
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}

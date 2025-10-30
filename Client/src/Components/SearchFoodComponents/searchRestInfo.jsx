@@ -6,6 +6,8 @@ import { highlightText } from "./highlight";
 
 export default function RestInfo({ restData, isVeg, query }) {
   const navigate = useNavigate();
+    const [showFullDesc, setShowFullDesc] = useState(false);
+
   const { isAuthenticated } = useSelector((state) => state.auth);
   const items = useSelector((state) => state.cartslice.items);
   const element = items.find((item) => item.id === restData.id);
@@ -33,7 +35,7 @@ export default function RestInfo({ restData, isVeg, query }) {
 
   return (
     <>
-      <div className="flex w-full justify-between mb-2 pb-2 mt-3 px-2">
+      <div className="flex w-full justify-between mb-2 pb-5 mt-3 px-2">
         <div className="w-[70%]">
           <p className="text-2xl text-slate-800 font-semibold mb-2">
             {highlightText(restData?.name || "", query)}
@@ -52,8 +54,25 @@ export default function RestInfo({ restData, isVeg, query }) {
           <span className=" text-gray-600">
             {"[" + restData?.ratings?.aggregatedRating?.ratingCountV2 + "]"}
           </span>
-          <p className=" text-gray-600">{restData?.description}</p>
-        </div>
+            <div className= "flex items-baseline">
+          {/* ✅ Description with "more/less" */}
+          <p
+            className={`text-gray-600 ${
+              showFullDesc ? "" : "truncate max-w-[90%]"
+            }`}
+          >
+            {restData?.description}
+          </p>
+          {restData?.description?.length > 70 && (
+            <button
+              className="text-green-600 cursor-pointer font-semibold mt-1"
+              onClick={() => setShowFullDesc(!showFullDesc)}
+            >
+              {showFullDesc ? "" : "more"}
+            </button>
+          )}
+          </div>
+                  </div>
 
         <div className="w-[20%] relative h-36">
           <img
@@ -68,21 +87,21 @@ export default function RestInfo({ restData, isVeg, query }) {
           {count === 0 ? (
             <button
               onClick={handleAdditems}
-              className="absolute text-green-600 text-xl font-bold px-4 py-2 shadow-2xl border rounded-xl bg-white bottom-[-19px] left-17"
+              className="absolute text-green-600 text-xl font-bold px-4 py-2 shadow-2xl border rounded-xl bg-white bottom-[-19px] left-1/2 -translate-x-1/2"
             >
               ADD
             </button>
           ) : (
-            <div className="absolute text-green-600 font-bold border-2 rounded-xl bg-white bottom-[-19px] left-10">
+            <div className="absolute flex items-center text-green-600 font-bold border-2 rounded-xl bg-white bottom-[-19px] left-1/2 -translate-x-1/2">
               <button
-                className="text-3xl px-3 py-1 hover:bg-slate-100 rounded-l-xl hover:border-r-2 hover:border-slate-200"
+                className="text-3xl px-3 py-1  hover:bg-slate-100 rounded-l-xl hover:border-r-2 hover:border-slate-200"
                 onClick={handleDecrementItems}
               >
                 -
               </button>
               <span className="px-2 text-2xl">{count}</span>
               <button
-                className="text-2xl px-3 py-1 hover:bg-slate-100 rounded-r-xl"
+                className="text-2xl px-3 py-1 h-full hover:bg-slate-100 rounded-r-xl"
                 onClick={handleIncrementItems}
               >
                 +
