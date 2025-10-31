@@ -98,7 +98,7 @@ function Signup() {
               <label className="block text-xs font-semibold mb-1">Name</label>
               <input
                 {...register("name")}
-                placeholder="John Doe"
+                placeholder="Enter your name"
                 className={`w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-1 focus:ring-orange-400 focus:outline-none transition-all duration-200 ${
                   errors.name ? "border-red-500" : "border-gray-300"
                 }`}
