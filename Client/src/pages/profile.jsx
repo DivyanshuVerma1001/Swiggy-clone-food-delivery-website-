@@ -111,24 +111,24 @@ export default function ProfilePage() {
               }`}
             onClick={() => setActiveTab("profile")}
           >
-            <User size={18} /> Profile
+            <User size={20} /> Profile
           </li>
           <li
             className={`flex items-center gap-3 text-[18px] hover:bg-slate-100 p-2 cursor-pointer hover:text-orange-600 ${activeTab === "orders" ? "text-orange-600 font-semibold bg-orange-50" : ""
               }`}
             onClick={() => setActiveTab("orders")}
           >
-            <List size={18} /> Orders
+            <List size={20} /> Orders
           </li>
           <li
             className={`flex items-center gap-3 text-[18px] hover:bg-slate-100 p-2 cursor-pointer hover:text-orange-600 ${activeTab === "address" ? "text-orange-600 font-semibold  bg-orange-50" : ""
               }`}
             onClick={() => setActiveTab("address")}
           >
-            <Home size={18} /> Addresses
+            <Home  size={20} /> Addresses
           </li>
           <li onClick={onSubmit} className="flex items-center text-[18px] hover:bg-red-100 p-2 gap-3 cursor-pointer hover:text-red-600 mt-10">
-            <LogOut size={18} /> Logout
+            <LogOut size={20} /> Logout
           </li>
         </ul>
       </div>
@@ -314,6 +314,7 @@ export default function ProfilePage() {
                   onChange={(e) => setAddressDetail(e.target.value)}
                   className="w-full border rounded-lg p-2"
                 />
+                <div className="flex gap-2">
                 <button
                   onClick={async () => {
                     await addAddress({
@@ -330,6 +331,10 @@ export default function ProfilePage() {
                 >
                   Save Address
                 </button>
+                <button onClick={()=> setAddingAddress(false)} className="bg-gray-300 border-slate-300 border-2 font-heading  text-slate-800 px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-200">
+                  Cancel
+                </button>
+                </div>
               </div>
             )}
 
@@ -337,9 +342,9 @@ export default function ProfilePage() {
             {!addingAddress && (
               <button
                 onClick={() => setAddingAddress(true)}
-                className="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
               >
-                + Add New Address
+                Add New Address
               </button>
             )}
           </div>

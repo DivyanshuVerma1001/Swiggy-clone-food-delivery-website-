@@ -7,7 +7,7 @@ export default function RestHeader() {
   const { isAuthenticated } = useSelector((state) => state.auth);
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-[#ff5200] shadow-md">
+    <header className="fixed font-heading top-0 left-0 w-full z-50 bg-[#ff5200] shadow-md">
       <div className="container mx-auto flex justify-between items-center px-8 py-2">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
@@ -16,7 +16,7 @@ export default function RestHeader() {
             src="/assets/navLogo.png"
             alt="logo"
           />
-          <span className="text-white font-bold text-3xl tracking-wide">Tastify</span>
+          <span className="text-white font-black text-3xl tracking-wide">Tastify</span>
         </Link>
 
         {/* Nav Links */}

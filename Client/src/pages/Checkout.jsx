@@ -12,12 +12,12 @@ export default function CheckoutPage() {
   const [addressDetail, setAddressDetail] = useState("")
   const [addingAddress, setAddingAddress] = useState(false)
   const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const [dummyAddresses, setDummyAddresses] = useState([])
   useEffect(() => {
     if (!isAuthenticated) {
       navigate('/login')
     }
   }, [])
-  const [dummyAddresses, setDummyAddresses] = useState([])
   const items = useSelector((state) => state.cartslice.items);
   const addAddress = async (data) => {
     try {
@@ -93,13 +93,20 @@ export default function CheckoutPage() {
               order_id: response.razorpay_order_id,
               payment_id: response.razorpay_payment_id,
               signature: response.razorpay_signature,
+              orderData:{
+                      items,
+                      selectedAddress,
+                      paymentMethod,
+                      total,
+                      userId: user.user._id,
+              }
             });
 
             if (verifyRes.data.success) {
               dispatch(ClearCart());
               setOrderDetails({
                 items,
-                address: dummyAddresses.find((a) => a.id === selectedAddress),
+                address: dummyAddresses.find((a) => a._id === selectedAddress),
                 paymentMethod,
                 total,
               });
@@ -212,10 +219,10 @@ export default function CheckoutPage() {
               <div className=" flex justify-end">
                 <button
                   onClick={() => setAddingAddress(true)}
-                  className="mt-4 bg-green-500 text-white px-2 py-2 font-medium text-sm rounded-lg hover:bg-green-600"
+                  className="mt-4 bg-orange-500 text-white px-2 py-2 font-medium text-sm rounded-lg hover:bg-orange-600"
                 >
                   Add Address
-                </button>
+                </button> 
               </div>
             )}
           </div>
@@ -236,7 +243,7 @@ export default function CheckoutPage() {
                 onChange={(e) => setAddressDetail(e.target.value)}
                 className="w-full border rounded-lg p-2"
               />
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-1.5">
                 <button
                   onClick={async () => {
                     await addAddress({
@@ -249,9 +256,12 @@ export default function CheckoutPage() {
                     const list = await axiosClient.get("/detail/getAddress");
                     setDummyAddresses(list.data.addressList || []);
                   }}
-                  className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+                  className="bg-orange-500 font-body text-white px-4 cursor-pointer py-2 rounded-lg hover:bg-orange-600"
                 >
                   Save Address
+                </button>
+                <button onClick={()=> setAddingAddress(false)} className="bg-gray-300 border-slate-300 border-2 font-heading  text-slate-800 px-2 py-1 rounded-lg cursor-pointer hover:bg-gray-200">
+                  Cancel
                 </button>
               </div>
             </div>

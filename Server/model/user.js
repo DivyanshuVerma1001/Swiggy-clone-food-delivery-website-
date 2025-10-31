@@ -57,7 +57,7 @@ const userSchema = new Schema({
         address: String,
         methodOfPayment: {
             type: String,
-            enum: ["Cash on delivery", "online"]
+            enum: ["Cash on delivery", "Online Payment"]
         },
         date:{
             type:Date,
