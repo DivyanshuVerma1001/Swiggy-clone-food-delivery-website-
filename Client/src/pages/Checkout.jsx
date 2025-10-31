@@ -6,6 +6,9 @@ import axiosClient from "../axiosClient/axiosClient";
 import SuccessComponent from "../Components/CheckoutPageComponents/OrderSuccessComponent";
 
 export default function CheckoutPage() {
+  useEffect(() => {
+    document.title = "Your Cart | Tastify";
+  }, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [addressTitle, setAddressTitle] = useState("")

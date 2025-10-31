@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axiosClient from "../../axiosClient/axiosClient";
 import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
+   useEffect(() => {
+      document.title = "Forgot Password | Tastify";
+    }, []);
   const { isAuthenticated, error, loading } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
 

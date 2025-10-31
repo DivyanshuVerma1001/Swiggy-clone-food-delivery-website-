@@ -25,6 +25,7 @@ function App() {
   console.log("authenticated",isAuthenticated)
   const dispatch= useDispatch()
   useEffect(()=>{
+    document.title = "Tastify";
     dispatch(checkAuth())
   },[dispatch])
   if(loading){

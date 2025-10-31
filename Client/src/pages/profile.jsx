@@ -5,6 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { logoutUser } from "../Store/authSlice"
 export default function ProfilePage() {
+  // Checkout.jsx
+useEffect(() => {
+  document.title = "Profile | Tastify";
+}, []);
+
 
   const [addressTitle, setAddressTitle] = useState("")
   const [addressDetail, setAddressDetail] = useState("")

@@ -48,6 +48,11 @@ export default function Restaurant() {
     fetchData(offset);
   }, [offset]);
 
+useEffect(() => {
+  document.title = "Restaurants | Tastify";
+}, []);
+
+
   // Intersection observer for lazy loading
   useEffect(() => {
     if (loading) return;

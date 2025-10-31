@@ -33,7 +33,7 @@ export default function RestaurantMenu() {
   return (
     <div className="flex flex-row min-h-screen antialiased ">
       {/* 🔹 Sidebar with filters */}
-      <div className="bg-white/10 max-h-screen w-74 sticky top-0 p-5 pt-20 overflow-y-auto border-r-1 border-slate-400">
+      <div className="bg-white/10 max-h-screen w-74 font-body sticky top-0 p-5 pt-20 overflow-y-auto border-r-1 border-slate-400">
         <h2 className="text-2xl font-bold text-black mb-6">Filters</h2>
 
         {/* Veg / Nonveg Toggle */}

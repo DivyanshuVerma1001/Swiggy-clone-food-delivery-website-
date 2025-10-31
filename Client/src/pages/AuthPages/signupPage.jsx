@@ -20,6 +20,9 @@ const signupSchema = z.object({
 });
 
 function Signup() {
+   useEffect(() => {
+      document.title = "Signup | Tastify";
+    }, []);
   const {
     register,
     handleSubmit,

@@ -1,12 +1,12 @@
-import { loginUser } from "../../Store/authSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { loginUser } from "../../Store/authSlice";
 import GoogleLoginWrapper from "../../googleAuth/googleLoginWrapper";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -14,6 +14,12 @@ const loginSchema = z.object({
 });
 
 function Login() {
+  useEffect(() => {
+    document.title = "Login | Tastify";
+  }, []);
+
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -22,7 +28,7 @@ function Login() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, error, loading } = useSelector((state) => state.auth);
+  const { isAuthenticated, loading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (isAuthenticated) navigate("/");
@@ -37,7 +43,9 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-100 via-white to-orange-50 px-4">
+<div className="min-h-screen flex items-center justify-center 
+bg-gradient-to-br from-[#FFF8E1] via-[#FFF3E0] to-[#E8F5E9] 
+px-4 transition-all duration-700">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 border border-gray-200"
@@ -72,21 +80,30 @@ function Login() {
             />
           </div>
           {errors.email && (
-            <span className="text-red-500 text-sm mt-1">{errors.email.message}</span>
+            <span className="text-red-500 text-sm mt-1">
+              {errors.email.message}
+            </span>
           )}
         </div>
 
-        {/* Password */}
+        {/* Password with eye toggle */}
         <div className="mb-2">
           <label className="block text-gray-700 font-medium mb-1">Password</label>
-          <div className="flex items-center border rounded-lg px-3 py-2 bg-gray-50 focus-within:ring-2 focus-within:ring-orange-500">
+          <div className="relative flex items-center border rounded-lg px-3 py-2 bg-gray-50 focus-within:ring-2 focus-within:ring-orange-500">
             <Lock className="text-gray-500 mr-2" size={18} />
             <input
               {...register("password")}
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              className="w-full bg-transparent outline-none"
+              className="w-full bg-transparent outline-none pr-8"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
           {errors.password && (
             <span className="text-red-500 text-sm mt-1">

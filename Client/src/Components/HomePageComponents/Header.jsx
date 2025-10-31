@@ -38,7 +38,7 @@ export default function Header() {
                 .getElementById("foodOption")
                 .scrollIntoView({ behavior: "smooth" })
             }
-            className="cursor-pointer hover:text-yellow-200 transition"
+            className="cursor-pointer hover:text-yellow-100 transition"
           >
             Best Deals
           </a>
@@ -48,7 +48,7 @@ export default function Header() {
                 .getElementById("groceryOption")
                 .scrollIntoView({ behavior: "smooth" })
             }
-            className="cursor-pointer transition"
+            className="cursor-pointer hover:text-yellow-100 transition"
           >
             Popular Picks
           </a>

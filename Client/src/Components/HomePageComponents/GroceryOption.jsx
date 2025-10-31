@@ -42,7 +42,7 @@ export default function GroceryOption() {
   };
 
   return (
-    <div className="w-[80%] container mx-auto mt-20 relative mb-20 pt-20">
+    <div id="groceryOption" className="w-[80%] container mx-auto mt-20 relative mb-20 pt-20">
       <h1 className="text-2xl font-bold mb-5">Shop Groceries on Instamart</h1>
 
       {/* Top-right manual buttons */}

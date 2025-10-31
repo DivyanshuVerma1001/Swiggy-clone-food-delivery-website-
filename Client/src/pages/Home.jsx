@@ -5,8 +5,12 @@ import Header from "../Components/HomePageComponents/Header";
 import Footer from '../Components/HomePageComponents/Footer';
 import MidPageSection from '../Components/HomePageComponents/midlanding';
 import HeroSection from '../Components/HomePageComponents/landing2';
+import { useEffect } from 'react';
 
 export default function Home(){
+     useEffect(() => {
+        document.title = "Tastify";
+      }, []);
     return(
         <>
         <Header></Header>
