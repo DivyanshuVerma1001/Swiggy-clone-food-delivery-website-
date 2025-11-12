@@ -26,6 +26,11 @@ app.use(cors({
 
 app.use(cookieParser()); 
 app.use(express.json())
+app.get('/',(req,res)=>{
+  res.json({
+    status:"backend is alive"
+  })
+})
 app.use('/user',authRouter)
 app.use('/payment',paymentRouter)
 app.use('/detail',detailRouter)
