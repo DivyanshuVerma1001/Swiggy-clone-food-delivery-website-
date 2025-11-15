@@ -81,6 +81,8 @@ const register = async (req, res) => {
     return res.status(400).json({ error: err.message });
   }
 }
+
+
 const verifyOtp = async (req, res) => {
   const { email, otp, phone } = req.body;
   try {
@@ -278,11 +280,11 @@ const forgotPassword = async (req, res) => {
   if (!user) {
     throw new Error("User not found.");
   }
-  const resetToken = generateResetPasswordToken();
+  const {resetTokenRaw, resetTokenHashed }= generateResetPasswordToken();
   user.resetPassword.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-  user.resetPassword.resetPasswordToken = resetToken
+  user.resetPassword.resetPasswordToken = resetTokenHashed
   await user.save({ validateBeforeSave: false });
-  const resetPasswordUrl = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
+  const resetPasswordUrl = `${process.env.FRONTEND_URL}/resetPassword/${resetTokenRaw}`;
 
   const message = `Your Reset Password Token is:- \n\n ${resetPasswordUrl} \n\n If you have not requested this email then please ignore it.`;
 
@@ -316,12 +318,12 @@ const resetPassword = async (req, res) => {
       .update(token)
       .digest("hex");
     console.log("done")
-    //   const user = await User.findOne({
-    //   "resetPassword.resetPasswordToken": resetPasswordToken,
-    //   "resetPassword.resetPasswordExpire": { $gt: Date.now() },
-    // });
-    const user = await User.findOne()
-    console.log("user mil gya :", user)
+      const user = await User.findOne({
+      "resetPassword.resetPasswordToken": resetPasswordToken,
+      "resetPassword.resetPasswordExpire": { $gt: Date.now() },
+    });
+    // const user = await User.findOne()
+    // console.log("user mil gya :", user)
 
     if (!user) {
       throw new Error("Reset password token is invalid or has been expired.")

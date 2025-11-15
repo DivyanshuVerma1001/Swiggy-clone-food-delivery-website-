@@ -1,15 +1,15 @@
 const crypto = require("crypto");
 const generateResetPasswordToken =  ()=> {
-  const resetToken = crypto.randomBytes(20).toString("hex");
+  const resetTokenRaw = crypto.randomBytes(20).toString("hex");
 
-  resetPasswordToken = crypto
+  resetTokenHashed = crypto
     .createHash("sha256")
-    .update(resetToken)
+    .update(resetTokenRaw)
     .digest("hex");
 
   
 
-  return resetPasswordToken;
+  return {resetTokenRaw,resetTokenHashed};
 };
 
 module.exports= generateResetPasswordToken;
